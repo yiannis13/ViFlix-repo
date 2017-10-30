@@ -1,38 +1,54 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
-using ViFlix.Models;
+using ViFlix.DataAccess.DbContextContainer;
+using ViFlix.DataAccess.Models;
 
 namespace ViFlix.Controllers
 {
     public class CustomersController : Controller
     {
-        private readonly IList<Customer> _customers = new List<Customer>
-        {
-            new Customer(){Id = 1, Name = "Yiannis"},
-            new Customer(){Id = 2, Name = "Vaia"}
-        };
+        private readonly ViFlixContext _context;
 
+        public CustomersController(ViFlixContext context)
+        {
+            _context = context;
+        }
+
+        public CustomersController()
+        {
+            _context = new ViFlixContext();
+        }
 
         [HttpGet]
         [Route("customers")]
         public ActionResult GetCustomers()
         {
-            if (_customers == null)
+            if (_context == null)
                 return HttpNotFound();
 
-            return View(_customers);
+            IList<Customer> customers = _context.Customers.Include(c => c.MembershipType).ToList();
+            if (!customers.Any())
+                return HttpNotFound();
+
+            return View(customers);
         }
 
         [HttpGet]
         [Route("customers/Details/{id}")]
         public ActionResult GetCustomer(int id)
         {
-            Customer customer = _customers.FirstOrDefault(c => c.Id == id);
+            var customer = _context.Customers.Include(c => c.MembershipType).SingleOrDefault(c => c.Id == id);
             if (customer == null)
                 return HttpNotFound();
 
             return View(customer);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
         }
     }
 }

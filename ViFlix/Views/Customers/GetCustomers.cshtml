@@ -1,4 +1,4 @@
-﻿@using ViFlix.Models
+﻿@using ViFlix.DataAccess.Models
 @model IList<Customer>
 
 @{
@@ -16,17 +16,17 @@
     }
     else
     {
-        <table style="width: 100%">
+        <table style="width: 100%" class="table table-bordered table-hover">
             <thead>Customer</thead>
             <tr>
-                <th>Id</th>
                 <th>Name</th>
+                <th>Membership Type</th>
             </tr>
             @foreach (Customer customer in @Model)
             {
                 <tr>
-                    <td>@customer.Id</td>
                     <td><a href="customers/details/@customer.Id">@customer.Name</a></td>
+                    <td>@customer.MembershipType.Name</td>
                 </tr>
             }
    
