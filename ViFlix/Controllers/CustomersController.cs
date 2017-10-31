@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,9 +27,6 @@ namespace ViFlix.Controllers
         [Route("customers")]
         public async Task<ActionResult> GetCustomers()
         {
-            if (_context == null)
-                return HttpNotFound();
-
             IList<Customer> customers = await _context.Customers.Include(c => c.MembershipType).ToListAsync();
             if (!customers.Any())
                 return HttpNotFound();
@@ -51,9 +47,9 @@ namespace ViFlix.Controllers
 
         [HttpGet]
         [Route("customers/new")]
-        public ActionResult CreateCustomerForm()
+        public async Task<ViewResult> CreateCustomerForm()
         {
-            IEnumerable<MembershipType> membershipTypes = _context.MembershipTypes.ToList();
+            IEnumerable<MembershipType> membershipTypes = await _context.MembershipTypes.ToListAsync();
             var viewModel = new CustomerFormViewModel
             {
                 MembershipTypes = membershipTypes
@@ -63,6 +59,7 @@ namespace ViFlix.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateCustomer(CustomerFormViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -119,6 +116,7 @@ namespace ViFlix.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> EditCustomer(CustomerFormViewModel viewModel)
         {
             if (!ModelState.IsValid)

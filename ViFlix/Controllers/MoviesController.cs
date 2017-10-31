@@ -55,6 +55,7 @@ namespace ViFlix.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateMovie(MovieFormViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -111,6 +112,7 @@ namespace ViFlix.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> EditMovie(MovieFormViewModel viewModel)
         {
             if (!ModelState.IsValid)

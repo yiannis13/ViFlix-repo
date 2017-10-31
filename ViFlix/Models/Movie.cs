@@ -14,6 +14,7 @@ namespace ViFlix.Models
         public DateTime? ReleasedDate { get; set; }
 
         [Display(Name = "Number In Stock")]
+        [Range(1, 20)]
         public int NumberInStock { get; set; }
 
     }
