@@ -13,6 +13,7 @@
     <div class="form-group">
         @Html.LabelFor(m => m.Movie.Name):
         @Html.TextBoxFor(m => m.Movie.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Movie.Name)
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.Movie.ReleasedDate):
@@ -22,10 +23,12 @@
     <div class="form-group">
         @Html.LabelFor(m => m.Genre):
         @Html.EnumDropDownListFor(m => m.Genre, "Select Genre", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Genre)
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.Movie.NumberInStock):
         @Html.TextBoxFor(m => m.Movie.NumberInStock, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Movie.NumberInStock)
     </div>
     <button type="submit" class="btn btn-primary">Save</button>
 }

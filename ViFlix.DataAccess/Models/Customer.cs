@@ -8,6 +8,8 @@ namespace ViFlix.DataAccess.Models
     {
         public int Id { get; set; }
 
+        [Required]
+        [StringLength(255)]
         public string Name { get; set; }
 
         [Display(Name = "Date of Birth")]

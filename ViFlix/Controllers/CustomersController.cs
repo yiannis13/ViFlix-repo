@@ -65,7 +65,27 @@ namespace ViFlix.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateCustomer(CustomerFormViewModel viewModel)
         {
-            _context.Customers.Add(viewModel.Customer);
+            if (!ModelState.IsValid)
+            {
+                var model = new CustomerFormViewModel
+                {
+                    Customer = viewModel.Customer,
+                    MembershipTypes = await _context.MembershipTypes.ToListAsync()
+                };
+
+                return View("CreateCustomerForm", model);
+            }
+
+            var customer = new Customer
+            {
+                Name = viewModel.Customer.Name,
+                Birthday = viewModel.Customer.Birthday,
+                MembershipType = viewModel.Customer.MembershipType,
+                IsSubscribedToNewsLetter = viewModel.Customer.IsSubscribedToNewsLetter,
+                MembershipTypeId = viewModel.Customer.MembershipTypeId
+            };
+
+            _context.Customers.Add(customer);
 
             await _context.SaveChangesAsync();
 
@@ -80,9 +100,19 @@ namespace ViFlix.Controllers
             if (dBCustomer == null)
                 return HttpNotFound();
 
+            var customer = new Models.Customer
+            {
+                Id = dBCustomer.Id,
+                Name = dBCustomer.Name,
+                Birthday = dBCustomer.Birthday,
+                IsSubscribedToNewsLetter = dBCustomer.IsSubscribedToNewsLetter,
+                MembershipType = dBCustomer.MembershipType,
+                MembershipTypeId = dBCustomer.MembershipTypeId
+            };
+
             var oldCustomerViewModel = new CustomerFormViewModel
             {
-                Customer = dBCustomer,
+                Customer = customer,
                 MembershipTypes = await _context.MembershipTypes.ToListAsync()
             };
             return View(oldCustomerViewModel);
@@ -91,6 +121,17 @@ namespace ViFlix.Controllers
         [HttpPost]
         public async Task<ActionResult> EditCustomer(CustomerFormViewModel viewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                var model = new CustomerFormViewModel
+                {
+                    Customer = viewModel.Customer,
+                    MembershipTypes = await _context.MembershipTypes.ToListAsync()
+                };
+
+                return View("EditCustomerForm", model);
+            }
+
             var oldCustomer = await _context.Customers.SingleOrDefaultAsync(c => c.Id == viewModel.Customer.Id);
             if (oldCustomer == null)
                 return HttpNotFound();

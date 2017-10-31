@@ -57,6 +57,21 @@ namespace ViFlix.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateMovie(MovieFormViewModel viewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                var model = new MovieFormViewModel
+                {
+                    Movie = new Models.Movie()
+                    {
+                        Name = viewModel.Movie.Name,
+                        NumberInStock = viewModel.Movie.NumberInStock
+                    },
+                    Genre = viewModel.Genre
+                };
+
+                return View("CreateMovieForm", model);
+            }
+
             var movie = new Movie
             {
                 Name = viewModel.Movie.Name,
@@ -98,6 +113,21 @@ namespace ViFlix.Controllers
         [HttpPost]
         public async Task<ActionResult> EditMovie(MovieFormViewModel viewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                var model = new MovieFormViewModel
+                {
+                    Movie = new Models.Movie()
+                    {
+                        Name = viewModel.Movie.Name,
+                        NumberInStock = viewModel.Movie.NumberInStock
+                    },
+                    Genre = viewModel.Genre
+                };
+
+                return View("EditMovieForm", model);
+            }
+
             var updatedMovie = await _context.Movies.SingleAsync(m => m.Id == viewModel.Movie.Id);
 
             updatedMovie.Name = viewModel.Movie.Name;

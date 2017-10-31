@@ -84,6 +84,10 @@
     <Compile Include="Migrations\201710301835279_AddGenreTableAndPolulate.Designer.cs">
       <DependentUpon>201710301835279_AddGenreTableAndPolulate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710311415428_AddValidationToFields.cs" />
+    <Compile Include="Migrations\201710311415428_AddValidationToFields.Designer.cs">
+      <DependentUpon>201710311415428_AddValidationToFields.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Genre.cs" />
@@ -124,6 +128,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710301835279_AddGenreTableAndPolulate.resx">
       <DependentUpon>201710301835279_AddGenreTableAndPolulate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710311415428_AddValidationToFields.resx">
+      <DependentUpon>201710311415428_AddValidationToFields.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
