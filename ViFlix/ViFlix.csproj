@@ -157,7 +157,8 @@
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Movie.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\RandomMovieViewModel.cs" />
+    <Compile Include="ViewModels\CustomerFormViewModel.cs" />
+    <Compile Include="ViewModels\MovieFormViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-flatly.css" />
@@ -200,6 +201,10 @@
     <Content Include="Views\Customers\GetCustomer.cshtml" />
     <Content Include="Views\Movies\GetMovies.cshtml" />
     <Content Include="Views\Movies\GetMovie.cshtml" />
+    <Content Include="Views\Customers\CreateCustomerForm.cshtml" />
+    <Content Include="Views\Customers\EditCustomerForm.cshtml" />
+    <Content Include="Views\Movies\CreateMovieForm.cshtml" />
+    <Content Include="Views\Movies\EditMovieForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

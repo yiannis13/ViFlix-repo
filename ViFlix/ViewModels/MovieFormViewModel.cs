@@ -1,0 +1,13 @@
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using ViFlix.DataAccess.Models;
+using Movie = ViFlix.Models.Movie;
+
+namespace ViFlix.ViewModels
+{
+    public class MovieFormViewModel
+    {
+        public Movie Movie { get; set; }
+        public Genre Genre { get; set; }
+    }
+}

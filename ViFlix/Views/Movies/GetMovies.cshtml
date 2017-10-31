@@ -1,5 +1,4 @@
-﻿@using Microsoft.Ajax.Utilities
-@using ViFlix.DataAccess.Models
+﻿@using ViFlix.DataAccess.Models
 @model IList<Movie>
 
 @{
@@ -7,8 +6,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Movies</h2>
-
+<hr />
+<button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("CreateMovieForm", "Movies")'">New Movie</button>
 <hr />
 
 @{
@@ -19,7 +18,6 @@
     else
     {
         <table style="width: 100%" class="table table-bordered table-hover">
-            <thead>Movie</thead>
             <tr>
                 <th>Name</th>
                 <th>Genre</th>
@@ -27,7 +25,8 @@
             @foreach (Movie movie in @Model)
             {
                 <tr>
-                    <td><a href="movies/details/@movie.Id">@movie.Name</a></td>
+                    <!--<td><a href="movies/details/@movie.Id">@movie.Name</a></td>-->
+                    <td>@Html.ActionLink(movie.Name, "EditMovieForm", new { id = movie.Id })</td>
                     <td>@movie.Genre</td>
                 </tr>
             }
