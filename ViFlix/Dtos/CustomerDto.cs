@@ -1,11 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
+using ViFlix.Validation;
 
-namespace ViFlix.DataAccess.Models
+namespace ViFlix.Dtos
 {
-    public class Customer
+    public class CustomerDto
     {
+        [JsonIgnore]
         public int Id { get; set; }
 
         [Required]
@@ -16,15 +18,6 @@ namespace ViFlix.DataAccess.Models
 
         public bool IsSubscribedToNewsLetter { get; set; }
 
-        public MembershipType MembershipType { get; set; }
-
         public byte MembershipTypeId { get; set; }
-
-        public IList<Movie> Movies { get; set; }
-
-        public Customer()
-        {
-            Movies = new List<Movie>();
-        }
     }
 }

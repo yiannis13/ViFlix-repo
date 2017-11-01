@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using ViFlix.DataAccess.Models;
+using Customer = ViFlix.Models.Customer;
+
 
 namespace ViFlix.Validation
 {
@@ -8,7 +10,7 @@ namespace ViFlix.Validation
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var customer = (Models.Customer)validationContext.ObjectInstance;
+            var customer = (Customer)validationContext.ObjectInstance;
 
             if (customer.MembershipTypeId == (byte)MembershipType.Type.Unknown
                 || customer.MembershipTypeId == (byte)MembershipType.Type.PayAsYouGo)

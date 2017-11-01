@@ -3,9 +3,9 @@ using System.Data.Entity;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
+using AutoMapper;
 using ViFlix.DataAccess.DbContextContainer;
-using ViFlix.Models;
-using ViFlix.ViewModels;
+using ViFlix.Dtos;
 
 namespace ViFlix.Controllers.Api
 {
@@ -25,67 +25,49 @@ namespace ViFlix.Controllers.Api
         }
 
         [HttpGet]
-        [Route("api/customers", Name = GetCustomerById)]
+        [Route("api/customers")]
         public async Task<IHttpActionResult> GetCustomers()
         {
             var dbCustomers = await _context.Customers.ToListAsync();
-            IList<Customer> customers = new List<Customer>(dbCustomers.Count);
+            IList<CustomerDto> customers = new List<CustomerDto>(dbCustomers.Count);
             foreach (var dbCustomer in dbCustomers)
             {
-                customers.Add(new Customer
-                {
-                    Name = dbCustomer.Name,
-                    Birthday = dbCustomer.Birthday,
-                    MembershipType = dbCustomer.MembershipType,
-                    MembershipTypeId = dbCustomer.MembershipTypeId,
-                    IsSubscribedToNewsLetter = dbCustomer.IsSubscribedToNewsLetter
-                });
+                customers.Add(Mapper.Map<DataAccess.Models.Customer, CustomerDto>(dbCustomer));
             }
 
             return Ok(customers);
         }
 
         [HttpGet]
-        [Route("api/customers/{id}")]
+        [Route("api/customers/{id}", Name = GetCustomerById)]
         public async Task<IHttpActionResult> GetCustomer(int id)
         {
             var dbCustomer = await _context.Customers.SingleOrDefaultAsync(c => c.Id == id);
             if (dbCustomer == null)
                 return NotFound();
 
-            return Ok(new Customer
-            {
-                Name = dbCustomer.Name,
-                Birthday = dbCustomer.Birthday,
-                MembershipType = dbCustomer.MembershipType,
-                MembershipTypeId = dbCustomer.MembershipTypeId,
-            });
+            return Ok(Mapper.Map<DataAccess.Models.Customer, CustomerDto>(dbCustomer));
         }
 
         [HttpPost]
         [Route("api/customers")]
-        public async Task<IHttpActionResult> CreateCustomer([FromBody] Customer customer)
+        public async Task<IHttpActionResult> CreateCustomer([FromBody] CustomerDto customer)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            _context.Customers.Add(new DataAccess.Models.Customer
-            {
-                Name = customer.Name,
-                Birthday = customer.Birthday,
-                MembershipTypeId = customer.MembershipTypeId,
-                MembershipType = customer.MembershipType,
-                IsSubscribedToNewsLetter = customer.IsSubscribedToNewsLetter
-            });
+            var customerToBeSaved = Mapper.Map<CustomerDto, DataAccess.Models.Customer>(customer);
+
+            _context.Customers.Add(customerToBeSaved);
 
             await _context.SaveChangesAsync();
 
-            return CreatedAtRoute(GetCustomerById, new { id = customer.Id }, customer);
+            return CreatedAtRoute(GetCustomerById, new { id = customerToBeSaved.Id }, customerToBeSaved);
         }
 
         [HttpPut]
-        [Route("api/customers/id")]
-        public async Task<IHttpActionResult> UpdateCustomer(int id, [FromBody] Customer customer)
+        [Route("api/customers/{id}")]
+        public async Task<IHttpActionResult> UpdateCustomer(int id, [FromBody] CustomerDto customer)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -94,11 +76,7 @@ namespace ViFlix.Controllers.Api
             if (dbCustomer == null)
                 return NotFound();
 
-            dbCustomer.Name = customer.Name;
-            dbCustomer.Birthday = customer.Birthday;
-            dbCustomer.IsSubscribedToNewsLetter = customer.IsSubscribedToNewsLetter;
-            dbCustomer.MembershipTypeId = customer.MembershipTypeId;
-            dbCustomer.MembershipType = customer.MembershipType;
+            Mapper.Map(customer, dbCustomer);
 
             await _context.SaveChangesAsync();
 
@@ -106,7 +84,7 @@ namespace ViFlix.Controllers.Api
         }
 
         [HttpDelete]
-        [Route("api/customers/id")]
+        [Route("api/customers/{id}")]
         public async Task<IHttpActionResult> DeleteCustomer(int id)
         {
             var dbCustomer = await _context.Customers.SingleOrDefaultAsync(c => c.Id == id);
@@ -120,8 +98,6 @@ namespace ViFlix.Controllers.Api
         }
 
     }
-
-
 }
 
 
