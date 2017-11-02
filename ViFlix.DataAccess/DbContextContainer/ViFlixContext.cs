@@ -1,9 +1,11 @@
 ﻿using System.Data.Entity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using ViFlix.DataAccess.Identity;
 using ViFlix.DataAccess.Models;
 
 namespace ViFlix.DataAccess.DbContextContainer
 {
-    public class ViFlixContext : DbContext
+    public class ViFlixContext : IdentityDbContext<AppUser>
     {
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Movie> Movies { get; set; }
