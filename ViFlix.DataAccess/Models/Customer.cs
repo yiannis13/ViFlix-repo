@@ -20,11 +20,5 @@ namespace ViFlix.DataAccess.Models
 
         public byte MembershipTypeId { get; set; }
 
-        public IList<Movie> Movies { get; set; }
-
-        public Customer()
-        {
-            Movies = new List<Movie>();
-        }
     }
 }

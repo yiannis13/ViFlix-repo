@@ -21,11 +21,5 @@ namespace ViFlix.DataAccess.Models
         [Required]
         public Genre Genre { get; set; }
 
-        public IList<Customer> Customers { get; set; }
-
-        public Movie()
-        {
-            Customers = new List<Customer>();
-        }
     }
 }
