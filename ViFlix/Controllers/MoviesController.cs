@@ -79,6 +79,7 @@ namespace ViFlix.Controllers
                 ReleasedDate = viewModel.Movie.ReleasedDate,
                 Genre = viewModel.Genre,
                 NumberInStock = viewModel.Movie.NumberInStock,
+                NumberAvailable = viewModel.Movie.NumberInStock,
                 DateAdded = DateTime.Now
             };
             _context.Movies.Add(movie);

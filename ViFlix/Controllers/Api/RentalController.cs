@@ -37,11 +37,12 @@ namespace ViFlix.Controllers.Api
                     var rent = new Rental
                     {
                         Customer = customer,
-                        DateRented = DateTime.Today,
+                        DateRented = DateTime.Now,
                         Movie = movie,
-                        DateToBeReturned = DateTime.Today.AddDays(3)
+                        DateToBeReturned = movie.ReleasedDate != null && CalculateAge(movie.ReleasedDate.Value) < 1
+                            ? DateTime.Today.AddDays(1)
+                            : DateTime.Today.AddDays(3)
                     };
-
                     context.Rentals.Add(rent);
                 }
 
@@ -51,7 +52,15 @@ namespace ViFlix.Controllers.Api
                 await context.SaveChangesAsync();
             }
 
-            return Ok(numberOfMoviesToBeRent + " was rented.");
+            return Ok();
+        }
+
+        private static int CalculateAge(DateTime releasedDate)
+        {
+            var now = int.Parse(DateTime.Now.ToString("yyyyMMdd"));
+            var dateOfBirth = int.Parse(releasedDate.ToString("yyyyMMdd"));
+
+            return (now - dateOfBirth) / 10000;
         }
 
     }
