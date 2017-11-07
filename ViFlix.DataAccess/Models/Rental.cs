@@ -16,5 +16,7 @@ namespace ViFlix.DataAccess.Models
         public DateTime DateRented { get; set; }
 
         public DateTime? DateReturned { get; set; }
+
+        public DateTime DateToBeReturned { get; set; }
     }
 }

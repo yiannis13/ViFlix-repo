@@ -97,6 +97,11 @@ namespace ViFlix.Controllers.Api
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+        }
+
     }
 }
 
