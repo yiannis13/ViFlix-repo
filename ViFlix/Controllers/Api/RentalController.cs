@@ -39,7 +39,8 @@ namespace ViFlix.Controllers.Api
                         Customer = customer,
                         DateRented = DateTime.Now,
                         Movie = movie,
-                        DateToBeReturned = movie.ReleasedDate != null && CalculateAge(movie.ReleasedDate.Value) < 1
+                        // if the movie is older than 1 year, it becomes a 3-day rented movie.
+                        DateToBeReturned = movie.ReleasedDate != null && CalculateReleaseDate(movie.ReleasedDate.Value) < 1
                             ? DateTime.Today.AddDays(1)
                             : DateTime.Today.AddDays(3)
                     };
@@ -55,12 +56,12 @@ namespace ViFlix.Controllers.Api
             return Ok();
         }
 
-        private static int CalculateAge(DateTime releasedDate)
+        private static int CalculateReleaseDate(DateTime releasedDate)
         {
             var now = int.Parse(DateTime.Now.ToString("yyyyMMdd"));
-            var dateOfBirth = int.Parse(releasedDate.ToString("yyyyMMdd"));
+            var release = int.Parse(releasedDate.ToString("yyyyMMdd"));
 
-            return (now - dateOfBirth) / 10000;
+            return (now - release) / 10000;
         }
 
     }
