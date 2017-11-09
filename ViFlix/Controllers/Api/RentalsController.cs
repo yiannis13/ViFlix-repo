@@ -8,7 +8,7 @@ using ViFlix.Dtos;
 
 namespace ViFlix.Controllers.Api
 {
-    public class RentalController : ApiController
+    public class RentalsController : ApiController
     {
 
         [HttpPost]
