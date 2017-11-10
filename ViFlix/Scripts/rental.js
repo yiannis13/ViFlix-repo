@@ -17,8 +17,9 @@
     });
 
     // on button click event
-    $("#rentalform").on("click",".btn",
-        function () {
+    $('#rentalform').on("click",".btn",
+        function (event) {
+            event.preventDefault(); // to prevent a normal html form submission. Instead we will use AJAX.
             viewModel.customerId = $('#customerId').val();
 
             if ($('#movie').val().length !== 0) { // include also the value that is currently in the input text if is not empty
@@ -28,16 +29,19 @@
             $.ajax({
                 url: "/api/rental",
                 type: 'POST',
-                data: viewModel,
-                success: function () {
-                    toastr.success("Rental succeeded. Enjoy your movie :)");
-                },
-                error: function () {
-                    alert("what the fuck");
-
-                    toastr.error("Sorry. Something unexpected happened :(");
-                    
-                }
+                data: viewModel
+            }).done(function (rentedMovies) {
+                bootbox.alert("Rented movie(s): " + rentedMovies.join(" *** "));
+                toastr.success("Enjoy your movie(s)", "Rental succeeded");
+                //clear the form
+                $('#rentalform').each(function () {
+                    this.reset();
+                });
+                // clear the movie list
+                $('#moviesUL').empty();
+            }).fail(function () {
+                toastr.error("Something unexpected happened", "Oops");
             });
         });
+
 });
