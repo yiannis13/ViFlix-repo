@@ -13,7 +13,7 @@ namespace ViFlix.Dtos
         public int CustomerId { get; set; }
 
         [Required]
-        public IList<int> MovieIds { get; set; }
+        public IList<string> MovieNames { get; set; }
 
     }
 }

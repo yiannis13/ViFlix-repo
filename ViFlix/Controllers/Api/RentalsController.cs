@@ -17,7 +17,7 @@ namespace ViFlix.Controllers.Api
         {
             var numberOfMoviesToBeRent = 0;
 
-            if (rental?.MovieIds == null || rental.MovieIds.Count == 0)
+            if (rental?.MovieNames == null || rental.MovieNames.Count == 0)
                 return BadRequest();
 
             using (var context = new ViFlixContext())
@@ -26,9 +26,9 @@ namespace ViFlix.Controllers.Api
                 if (customer == null)
                     return NotFound();
 
-                foreach (var movieId in rental.MovieIds)
+                foreach (var movieName in rental.MovieNames)
                 {
-                    var movie = await context.Movies.FirstOrDefaultAsync(m => m.Id == movieId);
+                    var movie = await context.Movies.FirstOrDefaultAsync(m => m.Name == movieName);
                     if (movie == null || movie.NumberAvailable < 1)
                         continue;
 
