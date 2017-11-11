@@ -32,13 +32,17 @@
                 data: viewModel
             }).done(function (rentedMovies) {
                 bootbox.alert("Rented movie(s): " + rentedMovies.join(" *** "));
-                toastr.success("Enjoy your movie(s)", "Rental succeeded");
+                toastr.success("Enjoy your movies", "Rental succeeded");
                 //clear the form
                 $('#rentalform').each(function () {
                     this.reset();
                 });
                 // clear the movie list
                 $('#moviesUL').empty();
+                // re-set the viewModel object
+                viewModel = {
+                    "movieNames": []
+                };
             }).fail(function () {
                 toastr.error("Something unexpected happened", "Oops");
             });
