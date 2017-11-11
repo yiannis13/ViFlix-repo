@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ViFlix.DataAccess.Models
@@ -21,11 +20,7 @@ namespace ViFlix.DataAccess.Models
         [Required]
         public Genre Genre { get; set; }
 
-        public IList<Customer> Customers { get; set; }
+        public int NumberAvailable { get; set; }
 
-        public Movie()
-        {
-            Customers = new List<Customer>();
-        }
     }
 }

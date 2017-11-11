@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ViFlix.DataAccess.Models
@@ -20,11 +19,5 @@ namespace ViFlix.DataAccess.Models
 
         public byte MembershipTypeId { get; set; }
 
-        public IList<Movie> Movies { get; set; }
-
-        public Customer()
-        {
-            Movies = new List<Movie>();
-        }
     }
 }

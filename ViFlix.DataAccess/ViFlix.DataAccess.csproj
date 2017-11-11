@@ -123,6 +123,18 @@
     <Compile Include="Migrations\201710312245413_AddRangeValidationToStock.Designer.cs">
       <DependentUpon>201710312245413_AddRangeValidationToStock.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711051936529_AddRentalDomainModel.cs" />
+    <Compile Include="Migrations\201711051936529_AddRentalDomainModel.Designer.cs">
+      <DependentUpon>201711051936529_AddRentalDomainModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711062044218_DeleteMovieCustomersTable.cs" />
+    <Compile Include="Migrations\201711062044218_DeleteMovieCustomersTable.Designer.cs">
+      <DependentUpon>201711062044218_DeleteMovieCustomersTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711072055023_AddNumberAvailableAndDateToBeReturnedColumnsToRental.cs" />
+    <Compile Include="Migrations\201711072055023_AddNumberAvailableAndDateToBeReturnedColumnsToRental.Designer.cs">
+      <DependentUpon>201711072055023_AddNumberAvailableAndDateToBeReturnedColumnsToRental.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\201711021445479_AddIdentitySupport.cs" />
     <Compile Include="Migrations\201711021445479_AddIdentitySupport.Designer.cs">
       <DependentUpon>201711021445479_AddIdentitySupport.cs</DependentUpon>
@@ -132,6 +144,7 @@
     <Compile Include="Models\Genre.cs" />
     <Compile Include="Models\MembershipType.cs" />
     <Compile Include="Models\Movie.cs" />
+    <Compile Include="Models\Rental.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -176,6 +189,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711021445479_AddIdentitySupport.resx">
       <DependentUpon>201711021445479_AddIdentitySupport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711051936529_AddRentalDomainModel.resx">
+      <DependentUpon>201711051936529_AddRentalDomainModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711062044218_DeleteMovieCustomersTable.resx">
+      <DependentUpon>201711062044218_DeleteMovieCustomersTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711072055023_AddNumberAvailableAndDateToBeReturnedColumnsToRental.resx">
+      <DependentUpon>201711072055023_AddNumberAvailableAndDateToBeReturnedColumnsToRental.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

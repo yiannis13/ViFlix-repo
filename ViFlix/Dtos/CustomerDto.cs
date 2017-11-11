@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
-using ViFlix.Validation;
 
 namespace ViFlix.Dtos
 {
