@@ -143,6 +143,10 @@
     <Compile Include="Migrations\201711111823560_ResolveConflicts.Designer.cs">
       <DependentUpon>201711111823560_ResolveConflicts.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711122127475_SeedUserRoleAdmin.cs" />
+    <Compile Include="Migrations\201711122127475_SeedUserRoleAdmin.Designer.cs">
+      <DependentUpon>201711122127475_SeedUserRoleAdmin.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Genre.cs" />
@@ -205,6 +209,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711111823560_ResolveConflicts.resx">
       <DependentUpon>201711111823560_ResolveConflicts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711122127475_SeedUserRoleAdmin.resx">
+      <DependentUpon>201711122127475_SeedUserRoleAdmin.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

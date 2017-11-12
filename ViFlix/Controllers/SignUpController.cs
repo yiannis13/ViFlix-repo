@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
+using ViFlix.DataAccess.DbContextContainer;
 using ViFlix.DataAccess.Identity;
 using ViFlix.ViewModels;
 using WebGrease.Css.Extensions;
@@ -42,6 +44,12 @@ namespace ViFlix.Controllers
                 IdentityResult result = await userManager.CreateAsync(appUser, user.Password);
                 if (result.Succeeded)
                 {
+                    // **Uncomment that code when you want to generate an new role to a user**
+                    //var roleStore = new RoleStore<AppRole>(new ViFlixContext());
+                    //RoleManager<AppRole> roleManager = new RoleManager<AppRole>(roleStore);
+                    //await roleManager.CreateAsync(new AppRole("admin"));
+                    //await userManager.AddToRoleAsync(appUser.Id, "admin");
+
                     await signInManager.SignInAsync(appUser, isPersistent: false, rememberBrowser: false);
                     return RedirectToAction("IndexWhenAuthenticated", "Home");
                 }
