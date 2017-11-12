@@ -1,0 +1,61 @@
+﻿@model ViFlix.ViewModels.AppUserViewModel
+
+@{
+    Layout = "";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @Html.ActionLink("ViFlix", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <h4>ViFlix ....WATCH ANYWHERE. CANCEL ANYTIME.</h4>
+        </div>
+    </div>
+</div>
+
+<div class="container body-content">
+
+    <div class="form-group">
+        <hr />
+        @using (@Html.BeginForm("LoginUser", "Login"))
+        {
+            <div class="form-group">
+                @Html.LabelFor(m => m.Email):
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Password):
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+            </div>
+
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-primary">Login</button>
+        }
+
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - ViFlix ....such an experience!</p>
+        </footer>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/toastr")
+
+</body>
+</html>

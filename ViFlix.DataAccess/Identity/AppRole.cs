@@ -8,8 +8,8 @@ namespace ViFlix.DataAccess.Identity
         {
         }
 
-        public AppRole(string name)
-            : base(name)
+        public AppRole(string roleName)
+            : base(roleName)
         {
         }
 
