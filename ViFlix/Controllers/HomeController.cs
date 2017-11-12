@@ -7,7 +7,16 @@ namespace ViFlix.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+                return IndexWhenAuthenticated();
+
+            return View("Index");
         }
+
+        public ActionResult IndexWhenAuthenticated()
+        {
+            return View("IndexWhenAuthenticated");
+        }
+
     }
 }

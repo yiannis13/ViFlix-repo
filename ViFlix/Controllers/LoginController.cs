@@ -16,7 +16,7 @@ namespace ViFlix.Controllers
             return View();
         }
 
-        public async Task<ActionResult> LoginUser(AppUserViewModel user)
+        public async Task<ActionResult> LoginUser(LoginViewModel user)
         {
             var userManager = HttpContext.GetOwinContext().GetUserManager<AppUserManager>();
             var authenticationManager = HttpContext.GetOwinContext().Authentication;
@@ -27,8 +27,8 @@ namespace ViFlix.Controllers
                 var appUser = await userManager.FindAsync(user.Email, user.Password);
                 if (appUser != null)
                 {
-                    //return RedirectToAction("Index", "Home");
-                    return RedirectToAction("GetCustomers", "Customers");
+                    await signInManager.SignInAsync(appUser, isPersistent: false, rememberBrowser: false);
+                    return RedirectToAction("Index", "Home");
                 }
             }
             ModelState.AddModelError("", @"Invalid username or password");
@@ -36,6 +36,12 @@ namespace ViFlix.Controllers
             return View(user);
         }
 
+        public ActionResult LogOut()
+        {
+            var authenticationManager = HttpContext.GetOwinContext().Authentication;
+            authenticationManager.SignOut();
 
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

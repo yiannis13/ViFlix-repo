@@ -206,9 +206,15 @@
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Movie.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Validation\ValidateAgeIfMember.cs" />
-    <Compile Include="ViewModels\AppUserViewModel.cs" />
+    <Compile Include="ViewModels\SignUpViewModel.cs" />
     <Compile Include="ViewModels\CustomerFormViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MovieFormViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -271,6 +277,7 @@
     <Content Include="Views\SignUp\SignUpUser.cshtml" />
     <Content Include="Views\Login\LoginForm.cshtml" />
     <Content Include="Views\Login\LoginUser.cshtml" />
+    <Content Include="Views\Home\IndexWhenAuthenticated.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -293,6 +300,12 @@
       <Project>{0FACCC8E-DF25-497A-8C34-08DC7D8E0D31}</Project>
       <Name>ViFlix.DataAccess</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

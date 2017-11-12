@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Resources;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
@@ -20,17 +22,17 @@ namespace ViFlix.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> SignUpUser(AppUserViewModel user)
+        public async Task<ActionResult> SignUpUser(SignUpViewModel user)
         {
             var userManager = HttpContext.GetOwinContext().GetUserManager<AppUserManager>();
             var authenticationManager = HttpContext.GetOwinContext().Authentication;
             var signInManager = new SignInManager<AppUser, string>(userManager, authenticationManager);
 
+            //if (user.Password != user.ConfirmedPassword)
+            //    ModelState.AddModelError("", Properties.Resources.PasswordDoesNotMatch);
+
             if (ModelState.IsValid)
             {
-                if (user.Password != user.ConfirmedPassword)
-                    ModelState.AddModelError("", @"password does not match");
-
                 var appUser = new AppUser
                 {
                     UserName = user.Email,
@@ -40,8 +42,8 @@ namespace ViFlix.Controllers
                 IdentityResult result = await userManager.CreateAsync(appUser, user.Password);
                 if (result.Succeeded)
                 {
-                    await signInManager.SignInAsync(appUser, isPersistent: true, rememberBrowser: false);
-                    return RedirectToAction("Index", "Home");
+                    await signInManager.SignInAsync(appUser, isPersistent: false, rememberBrowser: false);
+                    return RedirectToAction("IndexWhenAuthenticated", "Home");
                 }
 
                 result.Errors.ForEach(error => ModelState.AddModelError("", error));
@@ -49,5 +51,6 @@ namespace ViFlix.Controllers
 
             return View(user);
         }
+
     }
 }

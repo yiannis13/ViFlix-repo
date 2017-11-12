@@ -2,7 +2,7 @@
 
 namespace ViFlix.ViewModels
 {
-    public class AppUserViewModel
+    public class SignUpViewModel
     {
         [Required]
         [EmailAddress]
@@ -13,6 +13,8 @@ namespace ViFlix.ViewModels
         public string Password { get; set; }
 
         [Display(Name = "Confirm Password")]
+        [Required]
+        [Compare("Password", ErrorMessage = "Password does not match")]
         public string ConfirmedPassword { get; set; }
     }
 }

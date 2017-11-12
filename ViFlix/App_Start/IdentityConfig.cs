@@ -22,8 +22,7 @@ namespace ViFlix
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new PathString("/login"),
-
+                LoginPath = new PathString("/login")
             });
         }
     }
