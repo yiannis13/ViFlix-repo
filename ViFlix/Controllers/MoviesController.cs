@@ -3,10 +3,15 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using ViFlix.DataAccess.DbContextContainer;
-using ViFlix.DataAccess.Models;
+using ViFlix.DataAccess.Identity;
+using ViFlix.Models;
 using ViFlix.ViewModels;
+using Movie = ViFlix.DataAccess.Models.Movie;
 
 namespace ViFlix.Controllers
 {
@@ -24,30 +29,24 @@ namespace ViFlix.Controllers
             _context = new ViFlixContext();
         }
 
-        [Route("movies")]
+
         [HttpGet]
+        [Authorize]
+        [Route("movies")]
         public async Task<ActionResult> GetMovies()
         {
             IList<Movie> movies = await _context.Movies.ToListAsync();
-
             if (!movies.Any())
                 return HttpNotFound();
 
-            return View(movies);
+            if (User.IsInRole(RoleName.Admin))
+                return View("GetMovies", movies);
+
+            return View("GetMoviesReadOnly", movies);
         }
 
         [HttpGet]
-        [Route("movies/Details/{id}")]
-        public async Task<ActionResult> GetMovie(int id)
-        {
-            Movie movie = await _context.Movies.FirstOrDefaultAsync(c => c.Id == id);
-            if (movie == null)
-                return HttpNotFound();
-
-            return View(movie);
-        }
-
-        [HttpGet]
+        [Authorize(Roles = RoleName.Admin)]
         [Route("movies/new")]
         public ActionResult CreateMovieForm()
         {
@@ -55,6 +54,7 @@ namespace ViFlix.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = RoleName.Admin)]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateMovie(MovieFormViewModel viewModel)
         {
@@ -90,6 +90,7 @@ namespace ViFlix.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = RoleName.Admin)]
         [Route("movies/edit/{id}")]
         public async Task<ActionResult> EditMovieForm(int id)
         {
@@ -113,6 +114,7 @@ namespace ViFlix.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = RoleName.Admin)]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> EditMovie(MovieFormViewModel viewModel)
         {

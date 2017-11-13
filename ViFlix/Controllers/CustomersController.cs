@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using ViFlix.DataAccess.DbContextContainer;
 using ViFlix.DataAccess.Models;
+using ViFlix.Models;
 using ViFlix.ViewModels;
+using Customer = ViFlix.DataAccess.Models.Customer;
 
 namespace ViFlix.Controllers
 {
@@ -24,6 +26,7 @@ namespace ViFlix.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("customers")]
         public async Task<ActionResult> GetCustomers()
         {
@@ -31,21 +34,14 @@ namespace ViFlix.Controllers
             if (!customers.Any())
                 return HttpNotFound();
 
-            return View(customers);
+            if (User.IsInRole(RoleName.Admin))
+                return View("GetCustomers", customers);
+
+            return View("GetCustomersReadOnly", customers);
         }
 
         [HttpGet]
-        [Route("customers/Details/{id}")]
-        public async Task<ActionResult> GetCustomer(int id)
-        {
-            var customer = await _context.Customers.Include(c => c.MembershipType).SingleOrDefaultAsync(c => c.Id == id);
-            if (customer == null)
-                return HttpNotFound();
-
-            return View(customer);
-        }
-
-        [HttpGet]
+        [Authorize(Roles = RoleName.Admin)]
         [Route("customers/new")]
         public async Task<ViewResult> CreateCustomerForm()
         {
@@ -58,7 +54,9 @@ namespace ViFlix.Controllers
             return View(viewModel);
         }
 
+
         [HttpPost]
+        [Authorize(Roles = RoleName.Admin)]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateCustomer(CustomerFormViewModel viewModel)
         {
@@ -90,6 +88,7 @@ namespace ViFlix.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = RoleName.Admin)]
         [Route("customers/edit/{id}")]
         public async Task<ActionResult> EditCustomerForm(int id)
         {
@@ -116,6 +115,7 @@ namespace ViFlix.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = RoleName.Admin)]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> EditCustomer(CustomerFormViewModel viewModel)
         {

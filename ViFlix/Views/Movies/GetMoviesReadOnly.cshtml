@@ -7,8 +7,6 @@
 }
 
 <hr/>
-<button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("CreateMovieForm", "Movies")'">New Movie</button>
-<hr/>
 
 @{
     if (@Model.Count == 0)
@@ -25,8 +23,7 @@
             @foreach (Movie movie in @Model)
             {
                 <tr>
-                    <!--<td><a href="movies/details/@movie.Id">@movie.Name</a></td>-->
-                    <td>@Html.ActionLink(movie.Name, "EditMovieForm", new { id = movie.Id })</td>
+                    <td>@movie.Name</td>
                     <td>@movie.Genre</td>
                 </tr>
             }

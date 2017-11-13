@@ -44,7 +44,7 @@ namespace ViFlix.Controllers
                 IdentityResult result = await userManager.CreateAsync(appUser, user.Password);
                 if (result.Succeeded)
                 {
-                    // **Uncomment that code when you want to generate an new role to a user**
+                    // **Uncomment that code when you want to generate an new role to a user. Then, run the Application and SignUp.**
                     //var roleStore = new RoleStore<AppRole>(new ViFlixContext());
                     //RoleManager<AppRole> roleManager = new RoleManager<AppRole>(roleStore);
                     //await roleManager.CreateAsync(new AppRole("admin"));
