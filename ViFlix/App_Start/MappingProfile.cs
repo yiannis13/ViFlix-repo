@@ -8,8 +8,8 @@ namespace ViFlix
     {
         public MappingProfile()
         {
-            Mapper.CreateMap<Customer, CustomerDto>();
-            Mapper.CreateMap<CustomerDto, Customer>().ForMember(x => x.Id, opt => opt.Ignore());
+            CreateMap<Customer, CustomerDto>();
+            CreateMap<CustomerDto, Customer>().ForMember(x => x.Id, opt => opt.Ignore());
         }
 
     }
