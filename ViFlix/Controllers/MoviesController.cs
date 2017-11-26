@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
 using ViFlix.DataAccess.DbContextContainer;
-using ViFlix.DataAccess.Identity;
 using ViFlix.Models;
+using ViFlix.Repository;
+using ViFlix.Repository.EFImplementation;
 using ViFlix.ViewModels;
 using Movie = ViFlix.DataAccess.Models.Movie;
 
@@ -17,25 +15,24 @@ namespace ViFlix.Controllers
 {
     public class MoviesController : Controller
     {
-        private readonly ViFlixContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public MoviesController(ViFlixContext context)
+        public MoviesController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         public MoviesController()
         {
-            _context = new ViFlixContext();
+            _unitOfWork = new UnitOfWork(new ViFlixContext());
         }
-
 
         [HttpGet]
         [Authorize]
         [Route("movies")]
         public async Task<ActionResult> GetMovies()
         {
-            IList<Movie> movies = await _context.Movies.ToListAsync();
+            IList<Movie> movies = await _unitOfWork.Movies.GetAllAsync();
             if (!movies.Any())
                 return HttpNotFound();
 
@@ -82,9 +79,9 @@ namespace ViFlix.Controllers
                 NumberAvailable = viewModel.Movie.NumberInStock,
                 DateAdded = DateTime.Now
             };
-            _context.Movies.Add(movie);
+            _unitOfWork.Movies.Add(movie);
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveAsync();
 
             return RedirectToAction("GetMovies");
         }
@@ -94,7 +91,7 @@ namespace ViFlix.Controllers
         [Route("movies/edit/{id}")]
         public async Task<ActionResult> EditMovieForm(int id)
         {
-            var dBmovie = await _context.Movies.SingleAsync(m => m.Id == id);
+            var dBmovie = await _unitOfWork.Movies.GetAsync(id);
             if (dBmovie == null)
                 return HttpNotFound();
 
@@ -133,21 +130,21 @@ namespace ViFlix.Controllers
                 return View("EditMovieForm", model);
             }
 
-            var updatedMovie = await _context.Movies.SingleAsync(m => m.Id == viewModel.Movie.Id);
+            var updatedMovie = await _unitOfWork.Movies.GetAsync(viewModel.Movie.Id);
 
             updatedMovie.Name = viewModel.Movie.Name;
             updatedMovie.ReleasedDate = viewModel.Movie.ReleasedDate;
             updatedMovie.NumberInStock = viewModel.Movie.NumberInStock;
             updatedMovie.Genre = viewModel.Genre;
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveAsync();
 
             return RedirectToAction("GetMovies");
         }
 
         protected override void Dispose(bool disposing)
         {
-            _context.Dispose();
+            _unitOfWork.Dispose();
         }
     }
 }

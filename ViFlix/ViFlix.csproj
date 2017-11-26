@@ -213,6 +213,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Repository\Contract\ICustomerRepository.cs" />
+    <Compile Include="Repository\Contract\IMembershipTypeRepository.cs" />
+    <Compile Include="Repository\Contract\IMovieRepository.cs" />
+    <Compile Include="Repository\Contract\IRentalRepository.cs" />
+    <Compile Include="Repository\Contract\IRepository.cs" />
+    <Compile Include="Repository\EFImplementation\CustomerRepository.cs" />
+    <Compile Include="Repository\EFImplementation\MembershipTypeRepository.cs" />
+    <Compile Include="Repository\EFImplementation\MovieRepository.cs" />
+    <Compile Include="Repository\EFImplementation\RentalRepository.cs" />
+    <Compile Include="Repository\EFImplementation\Repository.cs" />
+    <Compile Include="Repository\EFImplementation\UnitOfWork.cs" />
+    <Compile Include="Repository\IUnitOfWork.cs" />
     <Compile Include="Validation\ValidateAgeIfMember.cs" />
     <Compile Include="ViewModels\SignUpViewModel.cs" />
     <Compile Include="ViewModels\CustomerFormViewModel.cs" />

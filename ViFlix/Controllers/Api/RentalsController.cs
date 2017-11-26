@@ -6,6 +6,7 @@ using System.Web.Http;
 using ViFlix.DataAccess.DbContextContainer;
 using ViFlix.DataAccess.Models;
 using ViFlix.Dtos;
+using ViFlix.Repository.EFImplementation;
 
 namespace ViFlix.Controllers.Api
 {
@@ -22,15 +23,15 @@ namespace ViFlix.Controllers.Api
             if (rental?.MovieNames == null || rental.MovieNames.Count == 0)
                 return BadRequest();
 
-            using (var context = new ViFlixContext())
+            using (var unitOfWork = new UnitOfWork(new ViFlixContext()))
             {
-                var customer = await context.Customers.FirstOrDefaultAsync(c => c.Id == rental.CustomerId);
+                var customer = await unitOfWork.Customers.GetAsync(rental.CustomerId);
                 if (customer == null)
                     return NotFound();
 
                 foreach (var movieName in rental.MovieNames)
                 {
-                    var movie = await context.Movies.FirstOrDefaultAsync(m => m.Name == movieName);
+                    var movie = await unitOfWork.Movies.GetMovieByName(movieName);
                     if (movie == null || movie.NumberAvailable < 1)
                         continue;
 
@@ -47,13 +48,13 @@ namespace ViFlix.Controllers.Api
                             : DateTime.Today.AddDays(3)
                     };
                     movieList.Add(movie.Name);
-                    context.Rentals.Add(rent);
+                    unitOfWork.Rentals.Add(rent);
                 }
 
                 if (numberOfMoviesToBeRent == 0)
                     return BadRequest("No movies available to rent");
 
-                await context.SaveChangesAsync();
+                await unitOfWork.SaveAsync();
             }
 
             return Ok(movieList);

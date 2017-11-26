@@ -1,34 +1,35 @@
 ﻿using System.Collections.Generic;
-using System.Data.Entity;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using AutoMapper;
 using ViFlix.DataAccess.DbContextContainer;
 using ViFlix.Dtos;
+using ViFlix.Repository;
+using ViFlix.Repository.EFImplementation;
 
 namespace ViFlix.Controllers.Api
 {
     public class CustomersController : ApiController
     {
+        private readonly IUnitOfWork _unitOfWork;
         private const string GetCustomerById = "GetCustomerById";
-        private readonly ViFlixContext _context;
 
-        public CustomersController(ViFlixContext context)
+        public CustomersController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         public CustomersController()
         {
-            _context = new ViFlixContext();
+            _unitOfWork = new UnitOfWork(new ViFlixContext());
         }
 
         [HttpGet]
         [Route("api/customers")]
         public async Task<IHttpActionResult> GetCustomers()
         {
-            var dbCustomers = await _context.Customers.ToListAsync();
+            var dbCustomers = await _unitOfWork.Customers.GetAllAsync();
             IList<CustomerDto> customers = new List<CustomerDto>(dbCustomers.Count);
             foreach (var dbCustomer in dbCustomers)
             {
@@ -42,7 +43,7 @@ namespace ViFlix.Controllers.Api
         [Route("api/customers/{id}", Name = GetCustomerById)]
         public async Task<IHttpActionResult> GetCustomer(int id)
         {
-            var dbCustomer = await _context.Customers.SingleOrDefaultAsync(c => c.Id == id);
+            var dbCustomer = await _unitOfWork.Customers.GetAsync(id);
             if (dbCustomer == null)
                 return NotFound();
 
@@ -58,9 +59,9 @@ namespace ViFlix.Controllers.Api
 
             var customerToBeSaved = Mapper.Map<CustomerDto, DataAccess.Models.Customer>(customer);
 
-            _context.Customers.Add(customerToBeSaved);
+            _unitOfWork.Customers.Add(customerToBeSaved);
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveAsync();
 
             return CreatedAtRoute(GetCustomerById, new { id = customerToBeSaved.Id }, customerToBeSaved);
         }
@@ -72,13 +73,13 @@ namespace ViFlix.Controllers.Api
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var dbCustomer = await _context.Customers.SingleOrDefaultAsync(c => c.Id == id);
+            var dbCustomer = await _unitOfWork.Customers.GetAsync(id);
             if (dbCustomer == null)
                 return NotFound();
 
             Mapper.Map(customer, dbCustomer);
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveAsync();
 
             return Ok();
         }
@@ -87,19 +88,19 @@ namespace ViFlix.Controllers.Api
         [Route("api/customers/{id}")]
         public async Task<IHttpActionResult> DeleteCustomer(int id)
         {
-            var dbCustomer = await _context.Customers.SingleOrDefaultAsync(c => c.Id == id);
+            var dbCustomer = await _unitOfWork.Customers.GetAsync(id);
             if (dbCustomer == null)
                 return NotFound();
 
-            _context.Customers.Remove(dbCustomer);
-            await _context.SaveChangesAsync();
+            _unitOfWork.Customers.Remove(dbCustomer);
+            await _unitOfWork.SaveAsync();
 
             return StatusCode(HttpStatusCode.NoContent);
         }
 
         protected override void Dispose(bool disposing)
         {
-            _context.Dispose();
+            _unitOfWork.Dispose();
         }
 
     }

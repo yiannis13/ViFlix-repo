@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using ViFlix.DataAccess.DbContextContainer;
 using ViFlix.DataAccess.Models;
 using ViFlix.Models;
+using ViFlix.Repository;
+using ViFlix.Repository.EFImplementation;
 using ViFlix.ViewModels;
 using Customer = ViFlix.DataAccess.Models.Customer;
 
@@ -13,16 +14,16 @@ namespace ViFlix.Controllers
 {
     public class CustomersController : Controller
     {
-        private readonly ViFlixContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CustomersController(ViFlixContext context)
+        public CustomersController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         public CustomersController()
         {
-            _context = new ViFlixContext();
+            _unitOfWork = new UnitOfWork(new ViFlixContext());
         }
 
         [HttpGet]
@@ -30,7 +31,7 @@ namespace ViFlix.Controllers
         [Route("customers")]
         public async Task<ActionResult> GetCustomers()
         {
-            IList<Customer> customers = await _context.Customers.Include(c => c.MembershipType).ToListAsync();
+            IList<Customer> customers = await _unitOfWork.Customers.GetCustomersWithMembershipTypeAsync();
             if (!customers.Any())
                 return HttpNotFound();
 
@@ -45,7 +46,7 @@ namespace ViFlix.Controllers
         [Route("customers/new")]
         public async Task<ViewResult> CreateCustomerForm()
         {
-            IEnumerable<MembershipType> membershipTypes = await _context.MembershipTypes.ToListAsync();
+            IEnumerable<MembershipType> membershipTypes = await _unitOfWork.MembershipTypes.GetAllAsync();
             var viewModel = new CustomerFormViewModel
             {
                 MembershipTypes = membershipTypes
@@ -65,7 +66,7 @@ namespace ViFlix.Controllers
                 var model = new CustomerFormViewModel
                 {
                     Customer = viewModel.Customer,
-                    MembershipTypes = await _context.MembershipTypes.ToListAsync()
+                    MembershipTypes = await _unitOfWork.MembershipTypes.GetAllAsync()
                 };
 
                 return View("CreateCustomerForm", model);
@@ -80,9 +81,9 @@ namespace ViFlix.Controllers
                 MembershipTypeId = viewModel.Customer.MembershipTypeId
             };
 
-            _context.Customers.Add(customer);
+            _unitOfWork.Customers.Add(customer);
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveAsync();
 
             return RedirectToAction("GetCustomers");
         }
@@ -92,7 +93,7 @@ namespace ViFlix.Controllers
         [Route("customers/edit/{id}")]
         public async Task<ActionResult> EditCustomerForm(int id)
         {
-            var dBCustomer = await _context.Customers.Include(c => c.MembershipType).SingleOrDefaultAsync(c => c.Id == id);
+            var dBCustomer = await _unitOfWork.Customers.GetCustomerWithMembershipTypeAsync(id);
             if (dBCustomer == null)
                 return HttpNotFound();
 
@@ -109,7 +110,7 @@ namespace ViFlix.Controllers
             var oldCustomerViewModel = new CustomerFormViewModel
             {
                 Customer = customer,
-                MembershipTypes = await _context.MembershipTypes.ToListAsync()
+                MembershipTypes = await _unitOfWork.MembershipTypes.GetAllAsync()
             };
             return View(oldCustomerViewModel);
         }
@@ -124,13 +125,13 @@ namespace ViFlix.Controllers
                 var model = new CustomerFormViewModel
                 {
                     Customer = viewModel.Customer,
-                    MembershipTypes = await _context.MembershipTypes.ToListAsync()
+                    MembershipTypes = await _unitOfWork.MembershipTypes.GetAllAsync()
                 };
 
                 return View("EditCustomerForm", model);
             }
 
-            var oldCustomer = await _context.Customers.SingleOrDefaultAsync(c => c.Id == viewModel.Customer.Id);
+            var oldCustomer = await _unitOfWork.Customers.GetAsync(viewModel.Customer.Id);
             if (oldCustomer == null)
                 return HttpNotFound();
 
@@ -139,14 +140,14 @@ namespace ViFlix.Controllers
             oldCustomer.IsSubscribedToNewsLetter = viewModel.Customer.IsSubscribedToNewsLetter;
             oldCustomer.MembershipTypeId = viewModel.Customer.MembershipTypeId;
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveAsync();
 
             return RedirectToAction("GetCustomers");
         }
 
         protected override void Dispose(bool disposing)
         {
-            _context.Dispose();
+            _unitOfWork.Dispose();
         }
 
     }
