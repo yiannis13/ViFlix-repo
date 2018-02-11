@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViFlix", "ViFlix\ViFlix.csproj", "{B3B873C8-BDF1-4AD1-A928-0878111D4741}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViFlix.Tests", "ViFlix.Tests\ViFlix.Tests.csproj", "{F4510E25-0702-4979-8614-2AB38DD4F7B7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViFlix.DataAccess", "ViFlix.DataAccess\ViFlix.DataAccess.csproj", "{0FACCC8E-DF25-497A-8C34-08DC7D8E0D31}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{0B9A4C19-CA6E-4884-815F-32CAA2006652}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +36,12 @@ Global
 		{0FACCC8E-DF25-497A-8C34-08DC7D8E0D31}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0FACCC8E-DF25-497A-8C34-08DC7D8E0D31}.Testing|Any CPU.ActiveCfg = Testing|Any CPU
 		{0FACCC8E-DF25-497A-8C34-08DC7D8E0D31}.Testing|Any CPU.Build.0 = Testing|Any CPU
+		{0B9A4C19-CA6E-4884-815F-32CAA2006652}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B9A4C19-CA6E-4884-815F-32CAA2006652}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B9A4C19-CA6E-4884-815F-32CAA2006652}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B9A4C19-CA6E-4884-815F-32CAA2006652}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B9A4C19-CA6E-4884-815F-32CAA2006652}.Testing|Any CPU.ActiveCfg = Release|Any CPU
+		{0B9A4C19-CA6E-4884-815F-32CAA2006652}.Testing|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

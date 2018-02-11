@@ -2,13 +2,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using ViFlix.DataAccess.DbContextContainer;
-using ViFlix.DataAccess.Models;
-using ViFlix.Models;
-using ViFlix.Repository;
-using ViFlix.Repository.EFImplementation;
+using Common.Data;
+using Common.Models;
+using Common.Models.Domain;
 using ViFlix.ViewModels;
-using Customer = ViFlix.DataAccess.Models.Customer;
 
 namespace ViFlix.Controllers
 {
@@ -19,11 +16,6 @@ namespace ViFlix.Controllers
         public CustomersController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-        }
-
-        public CustomersController()
-        {
-            _unitOfWork = new UnitOfWork(new ViFlixContext());
         }
 
         [HttpGet]
@@ -54,7 +46,6 @@ namespace ViFlix.Controllers
 
             return View(viewModel);
         }
-
 
         [HttpPost]
         [Authorize(Roles = RoleName.Admin)]
@@ -93,18 +84,18 @@ namespace ViFlix.Controllers
         [Route("customers/edit/{id}")]
         public async Task<ActionResult> EditCustomerForm(int id)
         {
-            var dBCustomer = await _unitOfWork.Customers.GetCustomerWithMembershipTypeAsync(id);
-            if (dBCustomer == null)
+            var cstmr = await _unitOfWork.Customers.GetCustomerWithMembershipTypeAsync(id);
+            if (cstmr == null)
                 return HttpNotFound();
 
-            var customer = new Models.Customer
+            var customer = new Customer
             {
-                Id = dBCustomer.Id,
-                Name = dBCustomer.Name,
-                Birthday = dBCustomer.Birthday,
-                IsSubscribedToNewsLetter = dBCustomer.IsSubscribedToNewsLetter,
-                MembershipType = dBCustomer.MembershipType,
-                MembershipTypeId = dBCustomer.MembershipTypeId
+                Id = cstmr.Id,
+                Name = cstmr.Name,
+                Birthday = cstmr.Birthday,
+                IsSubscribedToNewsLetter = cstmr.IsSubscribedToNewsLetter,
+                MembershipType = cstmr.MembershipType,
+                MembershipTypeId = cstmr.MembershipTypeId
             };
 
             var oldCustomerViewModel = new CustomerFormViewModel

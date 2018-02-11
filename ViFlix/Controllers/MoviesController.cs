@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using ViFlix.DataAccess.DbContextContainer;
-using ViFlix.Models;
-using ViFlix.Repository;
-using ViFlix.Repository.EFImplementation;
+using Common.Data;
+using Common.Models;
+using Common.Models.Domain;
 using ViFlix.ViewModels;
-using Movie = ViFlix.DataAccess.Models.Movie;
 
 namespace ViFlix.Controllers
 {
@@ -20,11 +17,6 @@ namespace ViFlix.Controllers
         public MoviesController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-        }
-
-        public MoviesController()
-        {
-            _unitOfWork = new UnitOfWork(new ViFlixContext());
         }
 
         [HttpGet]
@@ -59,7 +51,7 @@ namespace ViFlix.Controllers
             {
                 var model = new MovieFormViewModel
                 {
-                    Movie = new Models.Movie()
+                    Movie = new Movie()
                     {
                         Name = viewModel.Movie.Name,
                         NumberInStock = viewModel.Movie.NumberInStock
@@ -97,7 +89,7 @@ namespace ViFlix.Controllers
 
             var movie = new MovieFormViewModel
             {
-                Movie = new Models.Movie
+                Movie = new Movie
                 {
                     Id = dBmovie.Id,
                     Name = dBmovie.Name,
@@ -119,7 +111,7 @@ namespace ViFlix.Controllers
             {
                 var model = new MovieFormViewModel
                 {
-                    Movie = new Models.Movie()
+                    Movie = new Movie()
                     {
                         Name = viewModel.Movie.Name,
                         NumberInStock = viewModel.Movie.NumberInStock

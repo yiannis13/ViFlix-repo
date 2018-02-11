@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using ViFlix.DataAccess.Models;
-using Customer = ViFlix.Models.Customer;
+using Common.Models.Domain;
 
 namespace ViFlix.ViewModels
 {

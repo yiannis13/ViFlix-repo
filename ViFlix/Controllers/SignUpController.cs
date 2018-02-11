@@ -1,13 +1,9 @@
-﻿using System;
-using System.Resources;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Common.Models.Identity;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
-using ViFlix.DataAccess.DbContextContainer;
-using ViFlix.DataAccess.Identity;
 using ViFlix.ViewModels;
 using WebGrease.Css.Extensions;
 

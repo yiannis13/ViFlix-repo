@@ -1,5 +1,5 @@
 using System;
-using ViFlix.DataAccess.Models;
+using ViFlix.DataAccess.Entities;
 
 namespace ViFlix.DataAccess.Migrations
 {

@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Web.Http;
-using ViFlix.DataAccess.DbContextContainer;
-using ViFlix.DataAccess.Models;
-using ViFlix.Dtos;
-using ViFlix.Repository.EFImplementation;
+using Common.Data;
+using Common.Models.Domain;
+using Common.Models.Dtos;
 
 namespace ViFlix.Controllers.Api
 {
     public class RentalsController : ApiController
     {
+        private readonly IUnitOfWork _unitOfWork;
+
+        public RentalsController(IUnitOfWork unitOfWork)
+        {
+            this._unitOfWork = unitOfWork;
+        }
 
         [HttpPost]
         [Route("api/rental")]
@@ -21,41 +25,42 @@ namespace ViFlix.Controllers.Api
             var movieList = new List<string>();
 
             if (rental?.MovieNames == null || rental.MovieNames.Count == 0)
-                return BadRequest();
-
-            using (var unitOfWork = new UnitOfWork(new ViFlixContext()))
             {
-                var customer = await unitOfWork.Customers.GetAsync(rental.CustomerId);
-                if (customer == null)
-                    return NotFound();
-
-                foreach (var movieName in rental.MovieNames)
-                {
-                    var movie = await unitOfWork.Movies.GetMovieByName(movieName);
-                    if (movie == null || movie.NumberAvailable < 1)
-                        continue;
-
-                    numberOfMoviesToBeRent++;
-                    movie.NumberAvailable--;
-                    var rent = new Rental
-                    {
-                        Customer = customer,
-                        DateRented = DateTime.Now,
-                        Movie = movie,
-                        // if the movie is older than 1 year, it becomes a 3-day rented movie.
-                        DateToBeReturned = movie.ReleasedDate != null && CalculateReleaseDate(movie.ReleasedDate.Value) < 1
-                            ? DateTime.Today.AddDays(1)
-                            : DateTime.Today.AddDays(3)
-                    };
-                    movieList.Add(movie.Name);
-                    unitOfWork.Rentals.Add(rent);
-                }
-
-                if (numberOfMoviesToBeRent == 0)
-                    return BadRequest("No movies available to rent");
-
-                await unitOfWork.SaveAsync();
+                return BadRequest();
             }
+
+            var customer = await _unitOfWork.Customers.GetAsync(rental.CustomerId);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            foreach (var movieName in rental.MovieNames)
+            {
+                var movie = await _unitOfWork.Movies.GetMovieByName(movieName);
+                if (movie == null || movie.NumberAvailable < 1)
+                    continue;
+
+                numberOfMoviesToBeRent++;
+                movie.NumberAvailable--;
+                var rent = new Rental
+                {
+                    Customer = customer,
+                    DateRented = DateTime.Now,
+                    Movie = movie,
+                    // if the movie is older than 1 year, it becomes a 3-day rented movie.
+                    DateToBeReturned = movie.ReleasedDate != null && CalculateReleaseDate(movie.ReleasedDate.Value) < 1
+                        ? DateTime.Today.AddDays(1)
+                        : DateTime.Today.AddDays(3)
+                };
+                movieList.Add(movie.Name);
+                _unitOfWork.Rentals.Add(rent);
+            }
+
+            if (numberOfMoviesToBeRent == 0)
+                return BadRequest("No movies available to rent");
+
+            await _unitOfWork.SaveAsync();
 
             return Ok(movieList);
         }

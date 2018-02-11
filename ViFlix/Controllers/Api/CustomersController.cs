@@ -3,10 +3,9 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using AutoMapper;
-using ViFlix.DataAccess.DbContextContainer;
-using ViFlix.Dtos;
-using ViFlix.Repository;
-using ViFlix.Repository.EFImplementation;
+using Common.Data;
+using Common.Models.Domain;
+using Common.Models.Dtos;
 
 namespace ViFlix.Controllers.Api
 {
@@ -20,34 +19,28 @@ namespace ViFlix.Controllers.Api
             _unitOfWork = unitOfWork;
         }
 
-        public CustomersController()
-        {
-            _unitOfWork = new UnitOfWork(new ViFlixContext());
-        }
-
-        [HttpGet]
         [Route("api/customers")]
         public async Task<IHttpActionResult> GetCustomers()
         {
-            var dbCustomers = await _unitOfWork.Customers.GetAllAsync();
-            IList<CustomerDto> customers = new List<CustomerDto>(dbCustomers.Count);
-            foreach (var dbCustomer in dbCustomers)
+            var customers = await _unitOfWork.Customers.GetAllAsync();
+            IList<CustomerDto> dtoCustomers = new List<CustomerDto>(customers.Count);
+            foreach (var customer in customers)
             {
-                customers.Add(Mapper.Map<DataAccess.Models.Customer, CustomerDto>(dbCustomer));
+                dtoCustomers.Add(Mapper.Map<Customer, CustomerDto>(customer));
             }
 
-            return Ok(customers);
+            return Ok(dtoCustomers);
         }
 
         [HttpGet]
         [Route("api/customers/{id}", Name = GetCustomerById)]
         public async Task<IHttpActionResult> GetCustomer(int id)
         {
-            var dbCustomer = await _unitOfWork.Customers.GetAsync(id);
-            if (dbCustomer == null)
+            var customer = await _unitOfWork.Customers.GetAsync(id);
+            if (customer == null)
                 return NotFound();
 
-            return Ok(Mapper.Map<DataAccess.Models.Customer, CustomerDto>(dbCustomer));
+            return Ok(Mapper.Map<Customer, CustomerDto>(customer));
         }
 
         [HttpPost]
@@ -57,7 +50,7 @@ namespace ViFlix.Controllers.Api
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var customerToBeSaved = Mapper.Map<CustomerDto, DataAccess.Models.Customer>(customer);
+            var customerToBeSaved = Mapper.Map<CustomerDto, Customer>(customer);
 
             _unitOfWork.Customers.Add(customerToBeSaved);
 
@@ -73,11 +66,11 @@ namespace ViFlix.Controllers.Api
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var dbCustomer = await _unitOfWork.Customers.GetAsync(id);
-            if (dbCustomer == null)
+            var cstmr = await _unitOfWork.Customers.GetAsync(id);
+            if (cstmr == null)
                 return NotFound();
 
-            Mapper.Map(customer, dbCustomer);
+            Mapper.Map(customer, cstmr);
 
             await _unitOfWork.SaveAsync();
 
@@ -88,11 +81,11 @@ namespace ViFlix.Controllers.Api
         [Route("api/customers/{id}")]
         public async Task<IHttpActionResult> DeleteCustomer(int id)
         {
-            var dbCustomer = await _unitOfWork.Customers.GetAsync(id);
-            if (dbCustomer == null)
+            var cstmr = await _unitOfWork.Customers.GetAsync(id);
+            if (cstmr == null)
                 return NotFound();
 
-            _unitOfWork.Customers.Remove(dbCustomer);
+            _unitOfWork.Customers.Remove(cstmr);
             await _unitOfWork.SaveAsync();
 
             return StatusCode(HttpStatusCode.NoContent);

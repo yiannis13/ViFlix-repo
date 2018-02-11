@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Common.Models.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using ViFlix.DataAccess.Identity;
 using ViFlix.ViewModels;
 
 namespace ViFlix.Controllers
