@@ -16,6 +16,9 @@ namespace ViFlix
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            // Unity IoC container call
+            CompositionRoot.Compose();
         }
     }
 }

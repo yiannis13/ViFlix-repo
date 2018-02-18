@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using Common.Models.Identity;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
+using ViFlix.DataAccess.DbContextContainer;
 
-namespace Common.Models.Identity
+namespace ViFlix.DataAccess.Identity
 {
     public class AppUserManager : UserManager<AppUser>
     {
@@ -15,9 +17,7 @@ namespace Common.Models.Identity
         // this method is called by Owin. Thus, it's the best place to configure your UserManager
         public static AppUserManager Create(IdentityFactoryOptions<AppUserManager> options, IOwinContext context)
         {
-            //var manager = new AppUserManager(new UserStore<AppUser>(context.Get<ViFlixContext>()));
-            var manager = new AppUserManager(new UserStore<AppUser>());
-
+            var manager = new AppUserManager(new UserStore<AppUser>(new ViFlixContext()));
             // optionally configure your manager
 
             return manager;

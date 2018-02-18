@@ -1,7 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Common.Factories;
 using Common.Models.Identity;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using ViFlix.ViewModels;
 
@@ -10,6 +13,15 @@ namespace ViFlix.Controllers
     [AllowAnonymous]
     public class LoginController : Controller
     {
+        private readonly UserManagerFactory _userManagerFactory;
+        private readonly SignInManagerFactory _signInManagerFactory;
+
+        public LoginController(UserManagerFactory userManagerFactory, SignInManagerFactory signInManagerFactory)
+        {
+            _userManagerFactory = userManagerFactory ?? throw new NullReferenceException("userManagerFactory cannot be null");
+            _signInManagerFactory = signInManagerFactory ?? throw new NullReferenceException("signInManagerFactory cannot be null");
+        }
+
         [Route("login")]
         public ActionResult LoginForm()
         {
@@ -18,9 +30,8 @@ namespace ViFlix.Controllers
 
         public async Task<ActionResult> LoginUser(LoginViewModel user)
         {
-            var userManager = HttpContext.GetOwinContext().GetUserManager<AppUserManager>();
-            var authenticationManager = HttpContext.GetOwinContext().Authentication;
-            var signInManager = new SignInManager<AppUser, string>(userManager, authenticationManager);
+            UserManager<AppUser> userManager = _userManagerFactory.Create(HttpContext);
+            SignInManager<AppUser, string> signInManager = _signInManagerFactory.Create(HttpContext, userManager);
 
             if (ModelState.IsValid)
             {

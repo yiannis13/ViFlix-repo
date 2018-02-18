@@ -2,6 +2,7 @@
 using Common.Models.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using ViFlix.DataAccess.Entities;
+using ViFlix.DataAccess.Identity;
 
 namespace ViFlix.DataAccess.DbContextContainer
 {

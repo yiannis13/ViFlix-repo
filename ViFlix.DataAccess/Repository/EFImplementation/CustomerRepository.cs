@@ -15,13 +15,7 @@ namespace ViFlix.DataAccess.Repository.EFImplementation
         {
         }
 
-        public ViFlixContext ViFlixContext
-        {
-            get
-            {
-                return Context as ViFlixContext;
-            }
-        }
+        public ViFlixContext ViFlixContext => Context as ViFlixContext;
 
         public async Task<IList<Customer>> GetCustomersWithMembershipTypeAsync()
         {

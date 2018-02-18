@@ -1,7 +1,5 @@
-﻿using Common.Models.Identity;
+﻿using Common.Configuration;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
@@ -10,15 +8,17 @@ namespace ViFlix
 {
     public class IdentityConfig
     {
+        private readonly IConfigurationHandler _configHandler;
+
+        public IdentityConfig(IConfigurationHandler configHandler)
+        {
+            _configHandler = configHandler;
+        }
+
         public void Configuration(IAppBuilder app)
         {
-            // app.CreatePerOwinContext(() => new ViFlixContext());
-
-            app.CreatePerOwinContext<AppUserManager>(AppUserManager.Create);
-
-            //app.CreatePerOwinContext<RoleManager<AppRole>>((options, context) =>
-            // new RoleManager<AppRole>(
-            //  new RoleStore<AppRole>(context.Get<ViFlixContext>())));
+            // set up Owin Context for creating Application Managers like RoleManager, AppUserManager, etc
+            _configHandler.CreateAppManagers(app);
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Common.Data;
 using Common.Data.Repository;
 using ViFlix.DataAccess.DbContextContainer;
@@ -11,7 +12,8 @@ namespace ViFlix.DataAccess.Repository.EFImplementation
 
         public UnitOfWork(ViFlixContext context)
         {
-            _context = context;
+            _context = context ?? throw new NullReferenceException("DbContext cannot be null");
+
             Customers = new CustomerRepository(_context);
             Movies = new MovieRepository(_context);
             MembershipTypes = new MembershipTypeRepository(_context);
