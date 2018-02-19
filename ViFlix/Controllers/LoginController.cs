@@ -6,6 +6,7 @@ using Common.Factories;
 using Common.Models.Identity;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using ViFlix.DataAccess.Identity;
 using ViFlix.ViewModels;
 
 namespace ViFlix.Controllers
@@ -31,7 +32,13 @@ namespace ViFlix.Controllers
         public async Task<ActionResult> LoginUser(LoginViewModel user)
         {
             UserManager<AppUser> userManager = _userManagerFactory.Create(HttpContext);
+            if (userManager == null)
+                return View(user);
+
             SignInManager<AppUser, string> signInManager = _signInManagerFactory.Create(HttpContext, userManager);
+            if (signInManager == null)
+                return View(user);
+
 
             if (ModelState.IsValid)
             {

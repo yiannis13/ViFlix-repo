@@ -135,11 +135,5 @@ namespace ViFlix.Controllers
 
             return RedirectToAction("GetCustomers");
         }
-
-        protected override void Dispose(bool disposing)
-        {
-            _unitOfWork.Dispose();
-        }
-
     }
 }

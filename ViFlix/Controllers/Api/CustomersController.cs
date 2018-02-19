@@ -5,7 +5,7 @@ using System.Web.Http;
 using AutoMapper;
 using Common.Data;
 using Common.Models.Domain;
-using Common.Models.Dtos;
+using Common.Models.Dto;
 
 namespace ViFlix.Controllers.Api
 {

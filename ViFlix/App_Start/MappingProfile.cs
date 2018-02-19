@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Common.Models.Domain;
-using Common.Models.Dtos;
+using Common.Models.Dto;
 
 namespace ViFlix
 {

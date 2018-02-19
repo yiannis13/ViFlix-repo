@@ -17,8 +17,7 @@ namespace ViFlix
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            // Unity IoC container call
-            CompositionRoot.Compose();
+            // Unity IoC container is called automatically through annotations in UnityMvcActivator class
         }
     }
 }

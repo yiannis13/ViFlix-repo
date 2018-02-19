@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
-namespace Common.Models.Dtos
+namespace Common.Models.Dto
 {
     public class RentalDto
     {

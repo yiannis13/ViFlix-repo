@@ -3,8 +3,9 @@ using System.Threading.Tasks;
 using Common.Data;
 using Common.Data.Repository;
 using ViFlix.DataAccess.DbContextContainer;
+using ViFlix.DataAccess.Repository.EFImplementation;
 
-namespace ViFlix.DataAccess.Repository.EFImplementation
+namespace ViFlix.DataAccess.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {

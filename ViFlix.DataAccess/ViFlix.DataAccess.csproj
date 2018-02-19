@@ -174,12 +174,13 @@
     <Compile Include="Entities\Movie.cs" />
     <Compile Include="Entities\Rental.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\Converter.cs" />
     <Compile Include="Repository\EFImplementation\CustomerRepository.cs" />
     <Compile Include="Repository\EFImplementation\MembershipTypeRepository.cs" />
     <Compile Include="Repository\EFImplementation\MovieRepository.cs" />
     <Compile Include="Repository\EFImplementation\RentalRepository.cs" />
     <Compile Include="Repository\EFImplementation\Repository.cs" />
-    <Compile Include="Repository\EFImplementation\UnitOfWork.cs" />
+    <Compile Include="Repository\UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

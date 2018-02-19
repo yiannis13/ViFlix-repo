@@ -83,23 +83,23 @@ namespace ViFlix.Controllers
         [Route("movies/edit/{id}")]
         public async Task<ActionResult> EditMovieForm(int id)
         {
-            var dBmovie = await _unitOfWork.Movies.GetAsync(id);
-            if (dBmovie == null)
+            Movie movie = await _unitOfWork.Movies.GetAsync(id);
+            if (movie == null)
                 return HttpNotFound();
 
-            var movie = new MovieFormViewModel
+            var viewModelMovie = new MovieFormViewModel
             {
                 Movie = new Movie
                 {
-                    Id = dBmovie.Id,
-                    Name = dBmovie.Name,
-                    ReleasedDate = dBmovie.ReleasedDate,
-                    NumberInStock = dBmovie.NumberInStock
+                    Id = movie.Id,
+                    Name = movie.Name,
+                    ReleasedDate = movie.ReleasedDate,
+                    NumberInStock = movie.NumberInStock
                 },
-                Genre = dBmovie.Genre
+                Genre = movie.Genre
             };
 
-            return View(movie);
+            return View(viewModelMovie);
         }
 
         [HttpPost]
@@ -132,11 +132,6 @@ namespace ViFlix.Controllers
             await _unitOfWork.SaveAsync();
 
             return RedirectToAction("GetMovies");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            _unitOfWork.Dispose();
         }
     }
 }
