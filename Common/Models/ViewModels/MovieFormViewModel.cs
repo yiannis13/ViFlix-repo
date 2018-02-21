@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Common.Models.Domain;
 
-namespace ViFlix.ViewModels
+namespace Common.Models.ViewModels
 {
     public class MovieFormViewModel
     {

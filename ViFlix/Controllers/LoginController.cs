@@ -4,10 +4,9 @@ using System.Web;
 using System.Web.Mvc;
 using Common.Factories;
 using Common.Models.Identity;
+using Common.Models.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using ViFlix.DataAccess.Identity;
-using ViFlix.ViewModels;
 
 namespace ViFlix.Controllers
 {
@@ -38,7 +37,6 @@ namespace ViFlix.Controllers
             SignInManager<AppUser, string> signInManager = _signInManagerFactory.Create(HttpContext, userManager);
             if (signInManager == null)
                 return View(user);
-
 
             if (ModelState.IsValid)
             {

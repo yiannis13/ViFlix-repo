@@ -7,6 +7,9 @@ namespace Common.Data.Repository
     public interface ICustomerRepository : IRepository<Customer>
     {
         Task<IList<Customer>> GetCustomersWithMembershipTypeAsync();
+
         Task<Customer> GetCustomerWithMembershipTypeAsync(int id);
+
+        Task<Customer> ModifyCustomerAsync(Customer customer);
     }
 }

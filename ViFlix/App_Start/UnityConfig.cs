@@ -53,7 +53,7 @@ namespace ViFlix
 
             // Register your type's mappings here.
             container.RegisterType<IUnitOfWork, UnitOfWork>(
-                new PerResolveLifetimeManager(),
+                new PerResolveLifetimeManager(), // per graph implementation
                 new InjectionConstructor(typeof(ViFlixContext))
             );
             container.RegisterType<IConfigurationHandler, ConfigurationHandler>();

@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using Common.Data;
 using Common.Models;
 using Common.Models.Domain;
-using ViFlix.ViewModels;
+using Common.Models.ViewModels;
 
 namespace ViFlix.Controllers
 {
@@ -73,7 +73,7 @@ namespace ViFlix.Controllers
             };
             _unitOfWork.Movies.Add(movie);
 
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.CompleteAsync();
 
             return RedirectToAction("GetMovies");
         }
@@ -122,14 +122,11 @@ namespace ViFlix.Controllers
                 return View("EditMovieForm", model);
             }
 
-            var updatedMovie = await _unitOfWork.Movies.GetAsync(viewModel.Movie.Id);
+            Movie updatedMovie = await _unitOfWork.Movies.ModifyMovieWithGenreAsync(viewModel);
+            if (updatedMovie == null)
+                return HttpNotFound();
 
-            updatedMovie.Name = viewModel.Movie.Name;
-            updatedMovie.ReleasedDate = viewModel.Movie.ReleasedDate;
-            updatedMovie.NumberInStock = viewModel.Movie.NumberInStock;
-            updatedMovie.Genre = viewModel.Genre;
-
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.CompleteAsync();
 
             return RedirectToAction("GetMovies");
         }

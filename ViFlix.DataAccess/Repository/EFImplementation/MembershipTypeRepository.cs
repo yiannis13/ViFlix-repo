@@ -34,15 +34,17 @@ namespace ViFlix.DataAccess.Repository.EFImplementation
         public async Task<IList<MembershipType>> GetAllAsync()
         {
             List<Entities.MembershipType> membershipTypes = await _viFlixContext.MembershipTypes.ToListAsync();
-            if (membershipTypes == null)
-                return new List<MembershipType>();
 
             return membershipTypes.Select(Converter.ToModelMembershipType).ToList();
         }
 
-        public void Remove(MembershipType model)
+        public async void Remove(MembershipType model)
         {
-            _viFlixContext.MembershipTypes.Remove(Converter.ToEntityMembershipType(model));
+            Entities.MembershipType membershipType = await _viFlixContext.MembershipTypes.FindAsync(model.Id);
+            if (membershipType == null)
+                return;
+
+            _viFlixContext.MembershipTypes.Remove(membershipType);
         }
     }
 }

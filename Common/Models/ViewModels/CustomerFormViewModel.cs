@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Common.Models.Domain;
 
-namespace ViFlix.ViewModels
+namespace Common.Models.ViewModels
 {
     public class CustomerFormViewModel
     {

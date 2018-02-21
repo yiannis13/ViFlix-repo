@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ViFlix.ViewModels
+namespace Common.Models.ViewModels
 {
     public class LoginViewModel
     {

@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using Common.Factories;
 using Common.Models.Identity;
+using Common.Models.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using ViFlix.ViewModels;
 using WebGrease.Css.Extensions;
 
 namespace ViFlix.Controllers

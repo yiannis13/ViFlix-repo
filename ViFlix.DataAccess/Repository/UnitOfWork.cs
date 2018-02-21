@@ -29,7 +29,7 @@ namespace ViFlix.DataAccess.Repository
 
         public IRentalRepository Rentals { get; }
 
-        public async Task SaveAsync()
+        public async Task CompleteAsync()
         {
             await _context.SaveChangesAsync();
         }

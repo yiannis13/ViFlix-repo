@@ -1,10 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
 using Common.Data.Repository;
 using Common.Models.Domain;
+using Common.Models.ViewModels;
 using ViFlix.DataAccess.DbContextContainer;
+using Genre = ViFlix.DataAccess.Entities.Genre;
 
 
 namespace ViFlix.DataAccess.Repository.EFImplementation
@@ -35,18 +39,20 @@ namespace ViFlix.DataAccess.Repository.EFImplementation
         public async Task<IList<Movie>> GetAllAsync()
         {
             List<Entities.Movie> dbMovies = await _viFlixContext.Movies.ToListAsync();
-            if (dbMovies == null)
-                return new List<Movie>();
 
             return dbMovies.Select(Converter.ToModelMovie).ToList();
         }
 
-        public void Remove(Movie model)
+        public async void Remove(Movie model)
         {
-            _viFlixContext.Movies.Remove(Converter.ToEntityMovie(model));
+            Entities.Movie dbMovie = await _viFlixContext.Movies.FindAsync(model.Id);
+            if (dbMovie == null)
+                return;
+
+            _viFlixContext.Movies.Remove(dbMovie);
         }
 
-        public async Task<Movie> GetMovieByName(string name)
+        public async Task<Movie> GetMovieByNameAsync(string name)
         {
             Entities.Movie dbMovie = await _viFlixContext.Movies.SingleOrDefaultAsync(m => m.Name == name);
 
@@ -61,6 +67,23 @@ namespace ViFlix.DataAccess.Repository.EFImplementation
                 NumberInStock = dbMovie.NumberInStock,
                 ReleasedDate = dbMovie.ReleasedDate
             };
+        }
+
+        public async Task<Movie> ModifyMovieWithGenreAsync(MovieFormViewModel movieWithGenre)
+        {
+            Entities.Movie movieToBeUpdated = await _viFlixContext.Movies.FindAsync(movieWithGenre.Movie.Id);
+            if (movieToBeUpdated == null)
+                return null;
+
+            movieToBeUpdated.Name = movieWithGenre.Movie.Name;
+            movieToBeUpdated.ReleasedDate = movieWithGenre.Movie.ReleasedDate;
+            movieToBeUpdated.NumberInStock = movieWithGenre.Movie.NumberInStock;
+            movieToBeUpdated.Genre = (Genre)movieWithGenre.Genre;
+
+            // add the missing Genre value
+            movieWithGenre.Movie.Genre = movieWithGenre.Genre;
+
+            return movieWithGenre.Movie;
         }
     }
 }

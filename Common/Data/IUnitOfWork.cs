@@ -20,6 +20,6 @@ namespace Common.Data
 
         IRentalRepository Rentals { get; }
 
-        Task SaveAsync();
+        Task CompleteAsync();
     }
 }

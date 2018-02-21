@@ -7,6 +7,11 @@ namespace ViFlix.DataAccess.Repository
     {
         public static Customer ToModelCustomer(Entities.Customer dbCustomer)
         {
+            if (dbCustomer == null)
+            {
+                return null;
+            }
+
             return new Customer
             {
                 Id = dbCustomer.Id,
@@ -20,6 +25,11 @@ namespace ViFlix.DataAccess.Repository
 
         public static Entities.Customer ToEntityCustomer(Customer customer)
         {
+            if (customer == null)
+            {
+                return null;
+            }
+
             return new Entities.Customer
             {
                 Name = customer.Name,
@@ -32,6 +42,11 @@ namespace ViFlix.DataAccess.Repository
 
         public static MembershipType ToModelMembershipType(Entities.MembershipType membershipType)
         {
+            if (membershipType == null)
+            {
+                return null;
+            }
+
             return new MembershipType
             {
                 Id = membershipType.Id,
@@ -44,6 +59,11 @@ namespace ViFlix.DataAccess.Repository
 
         public static Entities.MembershipType ToEntityMembershipType(MembershipType membershipType)
         {
+            if (membershipType == null)
+            {
+                return null;
+            }
+
             return new Entities.MembershipType
             {
                 Name = membershipType.Name,
@@ -55,7 +75,12 @@ namespace ViFlix.DataAccess.Repository
 
         public static Movie ToModelMovie(Entities.Movie dbMovie)
         {
-            return new Movie()
+            if (dbMovie == null)
+            {
+                return null;
+            }
+
+            return new Movie
             {
                 Id = dbMovie.Id,
                 Name = dbMovie.Name,
@@ -69,6 +94,11 @@ namespace ViFlix.DataAccess.Repository
 
         public static Entities.Movie ToEntityMovie(Movie movie)
         {
+            if (movie == null)
+            {
+                return null;
+            }
+
             return new Entities.Movie
             {
                 Name = movie.Name,
@@ -82,7 +112,12 @@ namespace ViFlix.DataAccess.Repository
 
         public static Rental ToModelRental(Entities.Rental dbRental)
         {
-            return new Rental()
+            if (dbRental == null)
+            {
+                return null;
+            }
+
+            return new Rental
             {
                 Id = dbRental.Id,
                 Customer = ToModelCustomer(dbRental.Customer),
@@ -90,18 +125,6 @@ namespace ViFlix.DataAccess.Repository
                 DateRented = dbRental.DateRented,
                 DateReturned = dbRental.DateReturned,
                 DateToBeReturned = dbRental.DateToBeReturned
-            };
-        }
-
-        public static Entities.Rental ToEntityRental(Rental rental)
-        {
-            return new Entities.Rental()
-            {
-                Customer = ToEntityCustomer(rental.Customer),
-                Movie = ToEntityMovie(rental.Movie),
-                DateRented = rental.DateRented,
-                DateReturned = rental.DateReturned,
-                DateToBeReturned = rental.DateToBeReturned
             };
         }
     }

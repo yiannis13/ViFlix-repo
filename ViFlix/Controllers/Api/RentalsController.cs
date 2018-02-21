@@ -14,20 +14,22 @@ namespace ViFlix.Controllers.Api
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public RentalsController()
+        public RentalsController() :
+            this(new UnitOfWork(new ViFlixContext()))
         {
-            this._unitOfWork = new UnitOfWork(new ViFlixContext());
         }
 
         public RentalsController(IUnitOfWork unitOfWork)
         {
-            this._unitOfWork = unitOfWork;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpPost]
         [Route("api/rental")]
         public async Task<IHttpActionResult> RentMovies([FromBody] RentalDto rental)
         {
+            // Todo: Refactor by introducing a Service for it
+
             var numberOfMoviesToBeRent = 0;
             var movieList = new List<string>();
 
@@ -36,7 +38,7 @@ namespace ViFlix.Controllers.Api
                 return BadRequest();
             }
 
-            var customer = await _unitOfWork.Customers.GetAsync(rental.CustomerId);
+            Customer customer = await _unitOfWork.Customers.GetAsync(rental.CustomerId);
             if (customer == null)
             {
                 return NotFound();
@@ -44,7 +46,7 @@ namespace ViFlix.Controllers.Api
 
             foreach (var movieName in rental.MovieNames)
             {
-                var movie = await _unitOfWork.Movies.GetMovieByName(movieName);
+                Movie movie = await _unitOfWork.Movies.GetMovieByNameAsync(movieName);
                 if (movie == null || movie.NumberAvailable < 1)
                     continue;
 
@@ -67,7 +69,7 @@ namespace ViFlix.Controllers.Api
             if (numberOfMoviesToBeRent == 0)
                 return BadRequest("No movies available to rent");
 
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.CompleteAsync();
 
             return Ok(movieList);
         }
@@ -79,6 +81,5 @@ namespace ViFlix.Controllers.Api
 
             return (now - release) / 10000;
         }
-
     }
 }

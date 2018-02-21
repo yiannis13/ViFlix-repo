@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -6,6 +7,8 @@ using AutoMapper;
 using Common.Data;
 using Common.Models.Domain;
 using Common.Models.Dto;
+using ViFlix.DataAccess.DbContextContainer;
+using ViFlix.DataAccess.Repository;
 
 namespace ViFlix.Controllers.Api
 {
@@ -13,6 +16,11 @@ namespace ViFlix.Controllers.Api
     {
         private readonly IUnitOfWork _unitOfWork;
         private const string GetCustomerById = "GetCustomerById";
+
+        public CustomersController()
+        : this(new UnitOfWork(new ViFlixContext()))
+        {
+        }
 
         public CustomersController(IUnitOfWork unitOfWork)
         {
@@ -54,7 +62,7 @@ namespace ViFlix.Controllers.Api
 
             _unitOfWork.Customers.Add(customerToBeSaved);
 
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.CompleteAsync();
 
             return CreatedAtRoute(GetCustomerById, new { id = customerToBeSaved.Id }, customerToBeSaved);
         }
@@ -63,6 +71,8 @@ namespace ViFlix.Controllers.Api
         [Route("api/customers/{id}")]
         public async Task<IHttpActionResult> UpdateCustomer(int id, [FromBody] CustomerDto customer)
         {
+            // Todo: Implementation need to be changed
+
             if (!ModelState.IsValid)
                 return BadRequest();
 
@@ -72,7 +82,7 @@ namespace ViFlix.Controllers.Api
 
             Mapper.Map(customer, cstmr);
 
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.CompleteAsync();
 
             return Ok();
         }
@@ -86,16 +96,10 @@ namespace ViFlix.Controllers.Api
                 return NotFound();
 
             _unitOfWork.Customers.Remove(cstmr);
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.CompleteAsync();
 
             return StatusCode(HttpStatusCode.NoContent);
         }
-
-        protected override void Dispose(bool disposing)
-        {
-            _unitOfWork.Dispose();
-        }
-
     }
 }
 

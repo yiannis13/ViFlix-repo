@@ -5,7 +5,7 @@ using System.Web.Mvc;
 using Common.Data;
 using Common.Models;
 using Common.Models.Domain;
-using ViFlix.ViewModels;
+using Common.Models.ViewModels;
 
 namespace ViFlix.Controllers
 {
@@ -74,7 +74,7 @@ namespace ViFlix.Controllers
 
             _unitOfWork.Customers.Add(customer);
 
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.CompleteAsync();
 
             return RedirectToAction("GetCustomers");
         }
@@ -122,16 +122,11 @@ namespace ViFlix.Controllers
                 return View("EditCustomerForm", model);
             }
 
-            var oldCustomer = await _unitOfWork.Customers.GetAsync(viewModel.Customer.Id);
-            if (oldCustomer == null)
+            var updatedCustomer = await _unitOfWork.Customers.ModifyCustomerAsync(viewModel.Customer);
+            if (updatedCustomer == null)
                 return HttpNotFound();
 
-            oldCustomer.Name = viewModel.Customer.Name;
-            oldCustomer.Birthday = viewModel.Customer.Birthday;
-            oldCustomer.IsSubscribedToNewsLetter = viewModel.Customer.IsSubscribedToNewsLetter;
-            oldCustomer.MembershipTypeId = viewModel.Customer.MembershipTypeId;
-
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.CompleteAsync();
 
             return RedirectToAction("GetCustomers");
         }

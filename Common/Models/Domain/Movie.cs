@@ -22,6 +22,5 @@ namespace Common.Models.Domain
         public Genre Genre { get; set; }
 
         public DateTime DateAdded { get; set; }
-
     }
 }

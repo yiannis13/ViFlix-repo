@@ -3,8 +3,9 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using Common.Data.Repository;
-using Common.Models.Domain;
 using ViFlix.DataAccess.DbContextContainer;
+using ViFlix.DataAccess.Entities;
+using Rental = Common.Models.Domain.Rental;
 
 
 namespace ViFlix.DataAccess.Repository.EFImplementation
@@ -18,9 +19,20 @@ namespace ViFlix.DataAccess.Repository.EFImplementation
             _viFlixContext = context;
         }
 
-        public void Add(Rental model)
+        public async void Add(Rental model)
         {
-            _viFlixContext.Rentals.Add(Converter.ToEntityRental(model));
+            Customer customer = await _viFlixContext.Customers.FindAsync(model.Customer.Id);
+            Movie movie = await _viFlixContext.Movies.FindAsync(model.Movie.Id);
+
+            var rentalToBeSaved = new Entities.Rental
+            {
+                Customer = customer,
+                Movie = movie,
+                DateRented = model.DateRented,
+                DateToBeReturned = model.DateToBeReturned
+            };
+
+            _viFlixContext.Rentals.Add(rentalToBeSaved);
         }
 
         public async Task<Rental> GetAsync(object id)
@@ -35,15 +47,17 @@ namespace ViFlix.DataAccess.Repository.EFImplementation
         public async Task<IList<Rental>> GetAllAsync()
         {
             List<Entities.Rental> dbRentals = await _viFlixContext.Rentals.ToListAsync();
-            if (dbRentals == null)
-                return new List<Rental>();
 
             return dbRentals.Select(Converter.ToModelRental).ToList();
         }
 
-        public void Remove(Rental model)
+        public async void Remove(Rental model)
         {
-            _viFlixContext.Rentals.Remove(Converter.ToEntityRental(model));
+            Entities.Rental dbRental = await _viFlixContext.Rentals.FindAsync(model.Id);
+            if (dbRental == null)
+                return;
+
+            _viFlixContext.Rentals.Remove(dbRental);
         }
     }
 }

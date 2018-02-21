@@ -34,22 +34,22 @@ namespace ViFlix.DataAccess.Repository.EFImplementation
         public async Task<IList<Customer>> GetAllAsync()
         {
             List<Entities.Customer> dbCustomers = await _viFlixContext.Customers.ToListAsync();
-            if (dbCustomers == null)
-                return new List<Customer>();
 
             return dbCustomers.Select(Converter.ToModelCustomer).ToList();
         }
 
-        public void Remove(Customer customer)
+        public async void Remove(Customer customer)
         {
-            _viFlixContext.Customers.Remove(Converter.ToEntityCustomer(customer));
+            Entities.Customer dbCustomer = await _viFlixContext.Customers.FindAsync(customer.Id);
+            if (dbCustomer == null)
+                return;
+
+            _viFlixContext.Customers.Remove(dbCustomer);
         }
 
         public async Task<IList<Customer>> GetCustomersWithMembershipTypeAsync()
         {
             List<Entities.Customer> dBCustomers = await _viFlixContext.Customers.Include(c => c.MembershipType).ToListAsync();
-            if (dBCustomers == null)
-                return new List<Customer>();
 
             return dBCustomers.Select(Converter.ToModelCustomer).ToList();
         }
@@ -61,6 +61,20 @@ namespace ViFlix.DataAccess.Repository.EFImplementation
                 return new Customer();
 
             return Converter.ToModelCustomer(dbCustomer);
+        }
+
+        public async Task<Customer> ModifyCustomerAsync(Customer customer)
+        {
+            Entities.Customer oldCustomer = await _viFlixContext.Customers.FindAsync(customer.Id);
+            if (oldCustomer == null)
+                return null;
+
+            oldCustomer.Name = customer.Name;
+            oldCustomer.Birthday = customer.Birthday;
+            oldCustomer.IsSubscribedToNewsLetter = customer.IsSubscribedToNewsLetter;
+            oldCustomer.MembershipTypeId = customer.MembershipTypeId;
+
+            return customer;
         }
     }
 }
