@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -7,20 +6,14 @@ using AutoMapper;
 using Common.Data;
 using Common.Models.Domain;
 using Common.Models.Dto;
-using ViFlix.DataAccess.DbContextContainer;
-using ViFlix.DataAccess.Repository;
 
 namespace ViFlix.Controllers.Api
 {
     public class CustomersController : ApiController
     {
-        private readonly IUnitOfWork _unitOfWork;
         private const string GetCustomerById = "GetCustomerById";
 
-        public CustomersController()
-        : this(new UnitOfWork(new ViFlixContext()))
-        {
-        }
+        private readonly IUnitOfWork _unitOfWork;
 
         public CustomersController(IUnitOfWork unitOfWork)
         {

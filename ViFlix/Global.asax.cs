@@ -16,8 +16,7 @@ namespace ViFlix
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
-            // Unity IoC container is called automatically through annotations in UnityMvcActivator class
         }
+
     }
 }

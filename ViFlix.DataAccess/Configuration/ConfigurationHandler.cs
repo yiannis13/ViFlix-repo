@@ -14,10 +14,12 @@ namespace ViFlix.DataAccess.Configuration
         public void CreateAppManagers(IAppBuilder app)
         {
             app.CreatePerOwinContext(() => new ViFlixContext());
+
             app.CreatePerOwinContext<AppUserManager>(AppUserManager.Create);
+
             app.CreatePerOwinContext<RoleManager<AppRole>>(
-                (options, context) => new RoleManager<AppRole>(
-                    new RoleStore<AppRole>(context.Get<ViFlixContext>())));
+                (options, context) => new RoleManager<AppRole>(new RoleStore<AppRole>(context.Get<ViFlixContext>()))
+                );
         }
     }
 }

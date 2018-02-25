@@ -5,19 +5,12 @@ using System.Web.Http;
 using Common.Data;
 using Common.Models.Domain;
 using Common.Models.Dto;
-using ViFlix.DataAccess.DbContextContainer;
-using ViFlix.DataAccess.Repository;
 
 namespace ViFlix.Controllers.Api
 {
     public class RentalsController : ApiController
     {
         private readonly IUnitOfWork _unitOfWork;
-
-        public RentalsController() :
-            this(new UnitOfWork(new ViFlixContext()))
-        {
-        }
 
         public RentalsController(IUnitOfWork unitOfWork)
         {
