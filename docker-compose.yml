@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  sqlserver:
+    build:
+      context: ./data
+      dockerfile: Dockerfile
+    env_file:
+      - ".env"
+    environment:
+      - "ACCEPT_EULA=Y"
+      - "SA_PASSWORD=Passw0rd!"
+      - "MSSQL_PID=Express"
+    #volumes: - "db-data:/var/opt/mssql"
+    ports:
+      - "14331:1433"
+
+volumes:
+  db-data: {}
