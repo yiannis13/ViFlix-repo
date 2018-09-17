@@ -11,7 +11,8 @@ services:
       - "ACCEPT_EULA=Y"
       - "SA_PASSWORD=Passw0rd!"
       - "MSSQL_PID=Express"
-    #volumes: - "db-data:/var/opt/mssql"
+    volumes: 
+      - "db-data:/var/opt/mssql"
     ports:
       - "14331:1433"
 

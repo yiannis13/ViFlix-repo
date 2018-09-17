@@ -1,4 +1,5 @@
-CREATE DATABASE ViFlix;
+if db_id('ViFlix') is null
+    CREATE DATABASE ViFlix;
 GO
 
 USE ViFlix;

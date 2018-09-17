@@ -5,6 +5,5 @@ WORKDIR /app
 
 COPY . .
 
-#COPY /app/entrypoint.sh /
-#RUN chmod +x /entrypoint.sh
-#ENTRYPOINT ["/entrypoint.sh"]
+RUN chmod +x docker-entrypoint.sh
+ENTRYPOINT ["docker-entrypoint.sh"]
