@@ -168,6 +168,14 @@
     <Compile Include="Migrations\201711122127475_SeedUserRoleAdmin.Designer.cs">
       <DependentUpon>201711122127475_SeedUserRoleAdmin.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809231442573_AddColumnsInAspNetUsersTableToMakeItCompatibleWithNetcore.cs" />
+    <Compile Include="Migrations\201809231442573_AddColumnsInAspNetUsersTableToMakeItCompatibleWithNetcore.Designer.cs">
+      <DependentUpon>201809231442573_AddColumnsInAspNetUsersTableToMakeItCompatibleWithNetcore.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809231454171_FillNormalizedEmailColumnWithAdminEmail.cs" />
+    <Compile Include="Migrations\201809231454171_FillNormalizedEmailColumnWithAdminEmail.Designer.cs">
+      <DependentUpon>201809231454171_FillNormalizedEmailColumnWithAdminEmail.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Customer.cs" />
     <Compile Include="Entities\Genre.cs" />
@@ -237,6 +245,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711122127475_SeedUserRoleAdmin.resx">
       <DependentUpon>201711122127475_SeedUserRoleAdmin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809231442573_AddColumnsInAspNetUsersTableToMakeItCompatibleWithNetcore.resx">
+      <DependentUpon>201809231442573_AddColumnsInAspNetUsersTableToMakeItCompatibleWithNetcore.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809231454171_FillNormalizedEmailColumnWithAdminEmail.resx">
+      <DependentUpon>201809231454171_FillNormalizedEmailColumnWithAdminEmail.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
