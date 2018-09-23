@@ -172,6 +172,10 @@
     <Compile Include="Migrations\201809231442573_AddColumnsInAspNetUsersTableToMakeItCompatibleWithNetcore.Designer.cs">
       <DependentUpon>201809231442573_AddColumnsInAspNetUsersTableToMakeItCompatibleWithNetcore.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809231836156_SeedYiannisUser.cs" />
+    <Compile Include="Migrations\201809231836156_SeedYiannisUser.Designer.cs">
+      <DependentUpon>201809231836156_SeedYiannisUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Customer.cs" />
     <Compile Include="Entities\Genre.cs" />
@@ -244,6 +248,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809231442573_AddColumnsInAspNetUsersTableToMakeItCompatibleWithNetcore.resx">
       <DependentUpon>201809231442573_AddColumnsInAspNetUsersTableToMakeItCompatibleWithNetcore.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809231836156_SeedYiannisUser.resx">
+      <DependentUpon>201809231836156_SeedYiannisUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
